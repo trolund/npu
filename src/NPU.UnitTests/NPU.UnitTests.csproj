@@ -7,6 +7,7 @@
 
         <IsPackable>false</IsPackable>
         <IsTestProject>true</IsTestProject>
+        <RootNamespace>LockNote.UnitTests</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -21,7 +22,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\LockNote.Bl\LockNote.Bl.csproj" />
+      <ProjectReference Include="..\NPU.Bl\NPU.Bl.csproj" />
     </ItemGroup>
 
 </Project>

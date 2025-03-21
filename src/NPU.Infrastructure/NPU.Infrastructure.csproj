@@ -4,10 +4,11 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <RootNamespace>LockNote.Infrastructure</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\LockNote.Data\LockNote.Data.csproj" />
+      <ProjectReference Include="..\NPU.Data\NPU.Data.csproj" />
     </ItemGroup>
 
 </Project>

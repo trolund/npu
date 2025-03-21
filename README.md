@@ -1,5 +1,11 @@
 # Lock note
 
+## Get token
+
+```bash
+az account get-access-token --query accessToken --output tsv | pbcopy
+```
+
 ![alt text](src/docs/fronpage.png)
 ![alt text](src/docs/createNote.png)
 ![alt text](src/docs/created.png)

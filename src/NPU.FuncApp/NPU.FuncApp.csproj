@@ -5,6 +5,7 @@
         <OutputType>Exe</OutputType>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <RootNamespace>LockNote.FuncApp</RootNamespace>
     </PropertyGroup>
     <ItemGroup>
         <FrameworkReference Include="Microsoft.AspNetCore.App"/>
@@ -31,7 +32,7 @@
         <Using Include="System.Threading.ExecutionContext" Alias="ExecutionContext"/>
     </ItemGroup>
     <ItemGroup>
-      <ProjectReference Include="..\LockNote.Bl\LockNote.Bl.csproj" />
-      <ProjectReference Include="..\LockNote.Data\LockNote.Data.csproj" />
+      <ProjectReference Include="..\NPU.Bl\NPU.Bl.csproj" />
+      <ProjectReference Include="..\NPU.Data\NPU.Data.csproj" />
     </ItemGroup>
 </Project>

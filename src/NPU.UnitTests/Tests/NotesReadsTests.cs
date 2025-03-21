@@ -1,6 +1,6 @@
-// using LockNote.Bl;
+// using NPU.Bl;
 //
-// namespace LockNote.UnitTests.Tests;
+// namespace NPU.UnitTests.Tests;
 //
 // public class NotesReadsTests
 // {

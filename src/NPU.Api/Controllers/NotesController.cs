@@ -1,13 +1,21 @@
 using LockNote.Bl;
 using LockNote.Infrastructure.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LockNote.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class NotesController(NotesService notesService) : ControllerBase
     {
+        
+        [HttpGet]
+        public async Task<ActionResult> GetNote()
+        {
+            return Ok("Works!!!!");
+        }
         
         [HttpPost]
         public async Task<ActionResult> CreateNote(NoteDto noteDto)
