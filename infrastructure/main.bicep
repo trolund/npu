@@ -5,6 +5,9 @@ param containerName string
 param functionStorageAccountName string
 param functionAppName string
 
+param storageAccountName string
+param storageContainerName string
+
 param appServicePlanName string
 param appServiceName string
 param funcServicePlanName string
@@ -36,6 +39,25 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
   }
 }
 
+resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
+  name: storageAccountName
+  location: location
+  kind: 'StorageV2'
+  sku: {
+    name: 'Standard_LRS'
+  }
+}
+
+resource blobService 'Microsoft.Storage/storageAccounts/blobServices@2022-09-01' = {
+  parent: storageAccount
+  name: 'default'
+}
+
+resource blobContainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2022-09-01' = {
+  parent: blobService
+  name: storageContainerName
+}
+
 resource appService 'Microsoft.Web/sites@2022-03-01' = {
   name: appServiceName
   location: location
@@ -49,6 +71,10 @@ resource appService 'Microsoft.Web/sites@2022-03-01' = {
         }
         { name: 'COSMOS_DB_NAME', value: databaseName }
         { name: 'COSMOS_CON_NAME', value: containerName }
+        {
+          name: 'STORAGE_CONNECTION_STRING'
+          value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${storageAccount.listKeys().keys[0].value};EndpointSuffix=core.windows.net'
+        }
       ]
     }
   }
@@ -106,3 +132,4 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
 
 output functionAppUrl string = functionApp.properties.defaultHostName
 output appServiceUrl string = appService.properties.defaultHostName
+output connectionString string = 'DefaultEndpointsProtocol=https;AccountName=' + storageAccount.name + ';AccountKey=' + storageAccountKeys.keys[0].value + ';BlobEndpoint=https://' + storageAccount.name + '.blob.core.windows.net/;'
