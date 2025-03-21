@@ -1,0 +1,61 @@
+[
+  {
+    "SQLServerDBConnectionString": "",
+    "controlPanelLink": "https://portal.azure.com",
+    "databases": null,
+    "destinationAppUrl": "http://locknoteapp.azurewebsites.net",
+    "hostingProviderForumLink": "",
+    "msdeploySite": "LockNoteApp",
+    "mySQLDBConnectionString": "",
+    "profileName": "LockNoteApp - Web Deploy",
+    "publishMethod": "MSDeploy",
+    "publishUrl": "locknoteapp.scm.azurewebsites.net:443",
+    "userName": "$LockNoteApp",
+    "userPWD": "77y3xDZoayCTQq2Q4wvXyfGhWWwTgCy1BL988Q9yKwQSPTczsQuwllgEllgj",
+    "webSystem": "WebSites"
+  },
+  {
+    "SQLServerDBConnectionString": "",
+    "controlPanelLink": "https://portal.azure.com",
+    "databases": null,
+    "destinationAppUrl": "http://locknoteapp.azurewebsites.net",
+    "ftpPassiveMode": "True",
+    "hostingProviderForumLink": "",
+    "mySQLDBConnectionString": "",
+    "profileName": "LockNoteApp - FTP",
+    "publishMethod": "FTP",
+    "publishUrl": "ftps://waws-prod-db3-073.ftp.azurewebsites.windows.net/site/wwwroot",
+    "userName": "LockNoteApp\\$LockNoteApp",
+    "userPWD": "77y3xDZoayCTQq2Q4wvXyfGhWWwTgCy1BL988Q9yKwQSPTczsQuwllgEllgj",
+    "webSystem": "WebSites"
+  },
+  {
+    "SQLServerDBConnectionString": "",
+    "controlPanelLink": "https://portal.azure.com",
+    "databases": null,
+    "destinationAppUrl": "http://locknoteapp.azurewebsites.net",
+    "hostingProviderForumLink": "",
+    "mySQLDBConnectionString": "",
+    "profileName": "LockNoteApp - Zip Deploy",
+    "publishMethod": "ZipDeploy",
+    "publishUrl": "locknoteapp.scm.azurewebsites.net:443",
+    "userName": "$LockNoteApp",
+    "userPWD": "77y3xDZoayCTQq2Q4wvXyfGhWWwTgCy1BL988Q9yKwQSPTczsQuwllgEllgj",
+    "webSystem": "WebSites"
+  },
+  {
+    "SQLServerDBConnectionString": "",
+    "controlPanelLink": "https://portal.azure.com",
+    "databases": null,
+    "destinationAppUrl": "http://locknoteapp.azurewebsites.net",
+    "ftpPassiveMode": "True",
+    "hostingProviderForumLink": "",
+    "mySQLDBConnectionString": "",
+    "profileName": "LockNoteApp - ReadOnly - FTP",
+    "publishMethod": "FTP",
+    "publishUrl": "ftps://waws-prod-db3-073dr.ftp.azurewebsites.windows.net/site/wwwroot",
+    "userName": "LockNoteApp\\$LockNoteApp",
+    "userPWD": "77y3xDZoayCTQq2Q4wvXyfGhWWwTgCy1BL988Q9yKwQSPTczsQuwllgEllgj",
+    "webSystem": "WebSites"
+  }
+]

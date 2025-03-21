@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <InvariantGlobalization>true</InvariantGlobalization>
+        <SpaRoot>..\LockNote.Client</SpaRoot>
+        <SpaProxyLaunchCommand>npm run dev</SpaProxyLaunchCommand>
+        <SpaProxyServerUrl>https://localhost:5173</SpaProxyServerUrl>
+        <RootNamespace>LockNote</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.14" />
+        <PackageReference Include="Microsoft.AspNetCore.SpaProxy" Version="9.0.3" />
+        <PackageReference Include="Microsoft.Identity.Web" Version="3.8.0" />
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="7.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="Web.config">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\LockNote.Bl\LockNote.Bl.csproj" />
+      <ProjectReference Include="..\LockNote.Data\LockNote.Data.csproj" />
+      <ProjectReference Include="..\LockNote.Infrastructure\LockNote.Infrastructure.csproj" />
+    </ItemGroup>
+
+    <Target Name="CreateAppDataFolder" BeforeTargets="Publish">
+        <Exec Command="npm run build" WorkingDirectory="../LockNote.Client" />
+        <ItemGroup>
+            <CopyDist Include="../LockNote.Client/dist/**/*.*" />
+        </ItemGroup>
+        <Copy SourceFiles="@(CopyDist)" DestinationFiles="@(CopyDist->'$(PublishDir)\%(RecursiveDir)%(Filename)%(Extension)')" />
+    </Target>
+</Project>

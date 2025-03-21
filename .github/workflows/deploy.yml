@@ -1,0 +1,100 @@
+name: Deploy to Azure
+
+on:
+  workflow_call:
+    secrets:
+      AZURE_CREDENTIALS:
+        required: true
+      AZURE_RESOURCE_GROUP:
+        required: true
+      AZURE_LOCATION:
+        required: true
+      AZURE_WEBAPP_PUBLISH_PROFILE:
+        required: false
+    inputs:
+      AZURE_WEBAPP_NAME:
+        required: true
+        type: string
+      AZURE_FUNCTIONAPP_NAME:
+        required: true
+        type: string
+      COSMOS_DB_ACCOUNT_NAME:
+        required: true
+        type: string
+      FUNCTION_STORAGE_ACCOUNT_NAME:
+        required: true
+        type: string
+      APPSERVICE_PLAN_NAME:
+        required: true
+        type: string
+      FUNCTIONAPP_PLAN_NAME:
+        required: true
+        type: string
+      ENV:
+        required: true
+        type: string
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Login to Azure
+        uses: Azure/login@v2.2.0
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Download build artifacts of API and Frontend
+        uses: actions/download-artifact@v4.1.8
+        with:
+          name: build-front-and-api
+          path: ./build-front-and-api
+
+      - name: Download build artifacts of Function App
+        uses: actions/download-artifact@v4.1.8
+        with:
+          name: build-func-app
+          path: ./build-func-app
+
+      - name: Create infrastructure
+        run: |
+          az group create --name ${{ secrets.AZURE_RESOURCE_GROUP }} --location ${{ secrets.AZURE_LOCATION }}
+
+          output=$(az deployment group create \
+                      --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
+                      --template-file infrastructure/main.bicep \
+                      --parameters cosmosDbAccountName=${{ inputs.COSMOS_DB_ACCOUNT_NAME }} \
+                                  functionStorageAccountName=${{ inputs.FUNCTION_STORAGE_ACCOUNT_NAME }} \
+                                  functionAppName=${{ inputs.AZURE_FUNCTIONAPP_NAME }} \
+                                  databaseName=${{ secrets.COSMOS_DB_NAME }} \
+                                  containerName=${{ secrets.COSMOS_CON_NAME }} \
+                                  appServicePlanName=${{ inputs.APPSERVICE_PLAN_NAME }} \
+                                  appServiceName=${{ inputs.AZURE_WEBAPP_NAME }} \
+                                  funcServicePlanName=${{ inputs.FUNCTIONAPP_PLAN_NAME }} \
+                      --query "properties.outputs" -o json)
+                    
+          echo "FUNCTION_APP_URL=$(echo $output | jq -r '.functionAppUrl.value')" >> $GITHUB_ENV
+          echo "APP_SERVICE_URL=$(echo $output | jq -r '.appServiceUrl.value')" >> $GITHUB_ENV
+          echo "$(echo $output | jq -r '.appServiceUrl.value')" > frontend-url-${{ inputs.ENV }}.txt
+
+      - name: Upload frontend url artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-url-${{ inputs.ENV }}
+          path: frontend-url-${{ inputs.ENV }}.txt
+
+      - name: Deploy to Azure Web App (API and Frontend)
+        uses: Azure/webapps-deploy@v2
+        with:
+          app-name: ${{ inputs.AZURE_WEBAPP_NAME }}
+          slot-name: "production"
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: ./build-front-and-api
+
+      - name: Deploy Function App
+        uses: Azure/functions-action@v1
+        with:
+          app-name: ${{ inputs.AZURE_FUNCTIONAPP_NAME }}
+          package: ./build-func-app

@@ -1,0 +1,62 @@
+name: Teardown Azure Resources
+
+on:
+  workflow_call:
+    secrets:
+      AZURE_CREDENTIALS:
+        required: true
+      AZURE_RESOURCE_GROUP:
+        required: true
+    inputs:
+      AZURE_WEBAPP_NAME:
+        required: true
+        type: string
+      AZURE_FUNCTIONAPP_NAME:
+        required: true
+        type: string
+      COSMOS_DB_ACCOUNT_NAME:
+        required: true
+        type: string
+      FUNCTION_STORAGE_ACCOUNT_NAME:
+        required: true
+        type: string
+      APPSERVICE_PLAN_NAME:
+        required: true
+        type: string
+      FUNCTIONAPP_PLAN_NAME:
+        required: true
+        type: string
+
+jobs:
+  teardown:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Login to Azure
+        uses: Azure/login@v2.2.0
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Delete Azure Function App
+        run: |
+          az functionapp delete --name ${{ inputs.AZURE_FUNCTIONAPP_NAME }} --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }}
+
+      - name: Delete Azure Storage Account
+        run: |
+          az storage account delete --name ${{ inputs.FUNCTION_STORAGE_ACCOUNT_NAME }} --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --yes
+
+      - name: Delete Azure Cosmos DB Account
+        run: |
+          az cosmosdb delete --name ${{ inputs.COSMOS_DB_ACCOUNT_NAME }} --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --yes
+
+      - name: Delete Azure Web App
+        run: |
+          az webapp delete --name ${{ inputs.AZURE_WEBAPP_NAME }} --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }}
+
+      - name: Delete Azure Web App Service Plan
+        run: |
+          az appservice plan delete --name ${{ inputs.APPSERVICE_PLAN_NAME }} --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --yes
+
+      - name: Delete Azure Function App Service Plan
+        run: |
+          az appservice plan delete --name ${{ inputs.FUNCTIONAPP_PLAN_NAME }} --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --yes

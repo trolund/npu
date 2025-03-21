@@ -1,0 +1,66 @@
+name: Build and Publish Lock-note
+
+on:
+  workflow_call:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout code
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Setup Node.js and Install Dependencies
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      - name: Install Dependencies
+        working-directory: ./src/LockNote.Client
+        run: npm ci
+
+      # Setup .NET
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: "8.0.x"
+
+      # Restore Dependencies
+      - name: Restore dependencies
+        working-directory: ./src
+        run: dotnet restore
+
+      # Build Application
+      - name: Build application
+        working-directory: ./src
+        run: dotnet build --no-restore --configuration Release
+
+      # Publish Backend and Frontend Together
+      - name: Publish API and Frontend
+        working-directory: ./src
+        run: dotnet publish -c Release -o ./publish
+
+      # Build and Publish Function App
+      # TODO: remove build
+      - name: Build and publish function app project
+        working-directory: ./src/LockNote.FuncApp
+        run: |
+          dotnet build --configuration Release
+          dotnet publish --configuration Release --output ./publish-func-app
+
+      - name: Upload build artifacts of API and Frontend
+        id: upload-artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-front-and-api
+          path: ./src/publish
+
+      - name: Upload build artifacts of Function App
+        id: upload-artifact-func-app
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-func-app
+          path: ./src/LockNote.FuncApp/publish-func-app

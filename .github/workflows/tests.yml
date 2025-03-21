@@ -1,0 +1,67 @@
+name: Run Unit and End-to-End Tests
+
+on:
+  workflow_call:
+    inputs:
+      ENV:
+        required: true
+        type: string
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Download build artifacts of API and Frontend
+        uses: actions/download-artifact@v4.1.8
+        with:
+          name: build-front-and-api
+          path: ./build-front-and-api
+
+      - name: Download build artifacts of Function App
+        uses: actions/download-artifact@v4.1.8
+        with:
+          name: build-func-app
+          path: ./build-func-app
+
+      - name: Run Unit Tests
+        run: |
+          dotnet test ./src/LockNote.UnitTests/LockNote.UnitTests.csproj --logger "trx;LogFileName=test-results.trx"
+
+      # TODO: find a way where build is not required
+      - name: Install Playwright Browsers (Using PowerShell)
+        run: |
+          dotnet build ./src/LockNote.End2EndTests/LockNote.End2EndTests.csproj
+          cd ./src/LockNote.End2EndTests/bin/Debug/net8.0
+          pwsh playwright.ps1 install chromium
+
+      - name: Download Frontend URL Artifact
+        uses: actions/download-artifact@v4.1.8
+        with:
+          name: frontend-url-${{ inputs.ENV }}
+
+      - name: Read Frontend URL
+        run: |
+          FRONTEND_URL=$(cat frontend-url-${{ inputs.ENV }}.txt)
+          echo "Frontend URL is $FRONTEND_URL"
+          echo "BASEURL=$FRONTEND_URL" >> $GITHUB_ENV  # Set the BASEURL environment variable
+
+      - name: Modify appsettings.json
+        run: |
+          jq '.BASEURL = "https://${{ env.BASEURL }}"' ./src/LockNote.End2EndTests/appsettings.json > ./src/LockNote.End2EndTests/appsettings.temp.json
+          mv ./src/LockNote.End2EndTests/appsettings.temp.json ./src/LockNote.End2EndTests/appsettings.json
+
+      - name: Run End-to-End Tests
+        run: |
+          dotnet test ./src/LockNote.End2EndTests/LockNote.End2EndTests.csproj \
+            --logger "trx;LogFileName=test-results.trx"
+
+      - name: Upload Test Results (Optional)
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-test-results
+          path: TestResults/
