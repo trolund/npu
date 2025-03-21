@@ -1,9 +1,9 @@
-using LockNote.Data.Base;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Identity.Web;
 using Microsoft.OpenApi.Models;
+using NPU.Data.Base;
 
-namespace LockNote;
+namespace NPU;
 
 public static class Program
 {

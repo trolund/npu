@@ -1,9 +1,8 @@
-using LockNote.Bl;
-using LockNote.Data;
-using LockNote.Data.Base;
-using LockNote.Data.Repositories;
+using NPU.Bl;
+using NPU.Data.Base;
+using NPU.Data.Repositories;
 
-namespace LockNote;
+namespace NPU;
 
 public static class ServiceCollectionExtensions
 {

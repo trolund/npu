@@ -32,5 +32,5 @@ this will output a JSON object this entire object should be put in to the secret
 ## Run tests with UI
 
 ```bash
-dotnet test --settings:LockNote.End2EndTests/.runsettings
+dotnet test --settings:NPU.End2EndTests/.runsettings
 ```

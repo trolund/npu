@@ -4,10 +4,11 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <RootNamespace>LockNote.Data</RootNamespace>
+        <RootNamespace>NPU.Data</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="Azure.Storage.Blobs" Version="12.24.0" />
       <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.12.0" />
       <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.2" />
       <PackageReference Include="Nanoid" Version="3.1.0" />

@@ -7,7 +7,7 @@
 
         <IsPackable>false</IsPackable>
         <IsTestProject>true</IsTestProject>
-        <RootNamespace>LockNote.UnitTests</RootNamespace>
+        <RootNamespace>NPU.UnitTests</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
