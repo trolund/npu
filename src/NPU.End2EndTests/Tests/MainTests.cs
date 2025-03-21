@@ -1,6 +1,6 @@
-using LockNote.End2EndTests.PageFacades;
+using NPU.End2EndTests.PageFacades;
 
-namespace LockNote.End2EndTests.Tests;
+namespace NPU.End2EndTests.Tests;
 
 [Parallelizable(ParallelScope.Self)]
 [TestFixture]

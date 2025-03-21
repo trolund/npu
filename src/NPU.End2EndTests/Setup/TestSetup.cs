@@ -1,7 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Playwright;
 
-namespace LockNote.End2EndTests.Setup;
+namespace NPU.End2EndTests.Setup;
 
 public class TestSetup
 {

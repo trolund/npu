@@ -1,4 +1,4 @@
-namespace LockNote.End2EndTests.Setup;
+namespace NPU.End2EndTests.Setup;
 
 public interface IConfigService
 {

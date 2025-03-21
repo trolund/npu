@@ -1,7 +1,7 @@
 using NanoidDotNet;
 using Newtonsoft.Json;
 
-namespace LockNote.Data.Model;
+namespace NPU.Data.Model;
 
 public abstract class BaseItem
 {

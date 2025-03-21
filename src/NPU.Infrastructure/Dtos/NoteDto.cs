@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
-using LockNote.Data.Model;
+using NPU.Data.Model;
 
-namespace LockNote.Infrastructure.Dtos;
+namespace NPU.Infrastructure.Dtos;
 
 public class NoteDto
 {

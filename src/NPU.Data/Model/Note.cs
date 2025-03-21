@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace LockNote.Data.Model;
+namespace NPU.Data.Model;
 
 public class Note : BaseItem
 {

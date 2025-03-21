@@ -1,3 +1,3 @@
-namespace LockNote.Data.Base;
+namespace NPU.Data.Base;
 
 public record CosmosDbSettings(string DatabaseName, string ContainerName);

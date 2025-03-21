@@ -1,6 +1,7 @@
-namespace LockNote.Bl;
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+
+namespace NPU.Bl;
 
 public static class PasswordHashService
 {

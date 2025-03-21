@@ -1,4 +1,4 @@
-namespace LockNote.End2EndTests.PageFacades.General;
+namespace NPU.End2EndTests.PageFacades.General;
 
 public interface IPlaywrightFacade
 {

@@ -1,7 +1,7 @@
-using LockNote.End2EndTests.Setup;
 using Microsoft.Playwright;
+using NPU.End2EndTests.Setup;
 
-namespace LockNote.End2EndTests.PageFacades.General;
+namespace NPU.End2EndTests.PageFacades.General;
 
 public abstract class PlaywrightFacade(IPage page): IPlaywrightFacade
 { 

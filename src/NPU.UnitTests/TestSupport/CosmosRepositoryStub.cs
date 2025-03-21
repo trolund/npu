@@ -1,4 +1,4 @@
-namespace LockNote.UnitTests.TestSupport;
+namespace NPU.UnitTests.TestSupport;
 
 public class CosmosRepositoryStub
 {

@@ -1,9 +1,7 @@
-using LockNote.End2EndTests.PageFacades.General;
-
-namespace LockNote.End2EndTests.PageFacades;
-
-using System.Threading.Tasks;
 using Microsoft.Playwright;
+using NPU.End2EndTests.PageFacades.General;
+
+namespace NPU.End2EndTests.PageFacades;
 
 public class ReadNotePage(IPage page) : PlaywrightFacade(page, "/")
 {

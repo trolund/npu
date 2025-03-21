@@ -1,8 +1,8 @@
-using LockNote.Data.Base;
-using LockNote.Data.Model;
 using Microsoft.Azure.Cosmos;
+using NPU.Data.Base;
+using NPU.Data.Model;
 
-namespace LockNote.Data.Repositories;
+namespace NPU.Data.Repositories;
 
 public class NoteRepository(IRepository<Note> notesRepository)
 {

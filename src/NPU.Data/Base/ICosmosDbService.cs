@@ -1,6 +1,6 @@
 using Microsoft.Azure.Cosmos;
 
-namespace LockNote.Data.Base;
+namespace NPU.Data.Base;
 
 public interface ICosmosDbService
 {

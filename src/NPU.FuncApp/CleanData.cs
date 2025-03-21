@@ -1,8 +1,8 @@
-using LockNote.Bl;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
+using NPU.Bl;
 
-namespace LockNote.FuncApp;
+namespace NPU.FuncApp;
 
 public class CleanData(ILogger<CleanData> logger, NotesService notesService)
 {

@@ -1,7 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace LockNote.Bl;
+namespace NPU.Bl;
 
 public static class Encryption
 {

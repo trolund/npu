@@ -1,7 +1,7 @@
-using LockNote.Data.Model;
 using Microsoft.Azure.Cosmos;
+using NPU.Data.Model;
 
-namespace LockNote.Data.Base;
+namespace NPU.Data.Base;
 
 public interface IRepository<T> where T : BaseItem
 {

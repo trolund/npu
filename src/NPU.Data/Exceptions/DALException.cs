@@ -1,4 +1,4 @@
-namespace LockNote.Data.Exceptions;
+namespace NPU.Data.Exceptions;
 
 public class DalException: Exception
 {

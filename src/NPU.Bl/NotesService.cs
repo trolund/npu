@@ -1,9 +1,9 @@
-using LockNote.Data.Model;
-using LockNote.Data.Repositories;
-using LockNote.Infrastructure.Dtos;
 using Microsoft.Extensions.Logging;
+using NPU.Data.Model;
+using NPU.Data.Repositories;
+using NPU.Infrastructure.Dtos;
 
-namespace LockNote.Bl;
+namespace NPU.Bl;
 
 public class NotesService(NoteRepository notesRepository, ILogger<NotesService> logger)
 {

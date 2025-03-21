@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Configuration;
 
-namespace LockNote.End2EndTests.Setup;
+namespace NPU.End2EndTests.Setup;
 
 public class ConfigService : IConfigService
 {
