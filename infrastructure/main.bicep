@@ -137,4 +137,3 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
 
 output functionAppUrl string = functionApp.properties.defaultHostName
 output appServiceUrl string = appService.properties.defaultHostName
-output connectionString string = 'DefaultEndpointsProtocol=https;AccountName=' + storageAccount.name + ';AccountKey=' + storageAccountKeys.keys[0].value + ';BlobEndpoint=https://' + storageAccount.name + '.blob.core.windows.net/;'
