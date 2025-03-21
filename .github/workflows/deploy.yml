@@ -30,6 +30,12 @@ on:
       FUNCTIONAPP_PLAN_NAME:
         required: true
         type: string
+      STORAGE_ACC_NAME:
+        required: true
+        type: string
+      STORAGE_CON_NAME:
+        required: true
+        type: string
       ENV:
         required: true
         type: string
@@ -73,6 +79,8 @@ jobs:
                                   appServicePlanName=${{ inputs.APPSERVICE_PLAN_NAME }} \
                                   appServiceName=${{ inputs.AZURE_WEBAPP_NAME }} \
                                   funcServicePlanName=${{ inputs.FUNCTIONAPP_PLAN_NAME }} \
+                                  storageAccountName=${{ inputs.STORAGE_ACC_NAME }} \
+                                  storageContainerName=${{ inputs.STORAGE_CON_NAME }} \
                       --query "properties.outputs" -o json)
                     
           echo "FUNCTION_APP_URL=$(echo $output | jq -r '.functionAppUrl.value')" >> $GITHUB_ENV

@@ -5,8 +5,8 @@ on:
   #  branches:
   #    - main
   push: # Trigger the workflow on push
-      branches:
-        - main
+    branches:
+      - main
   workflow_dispatch: # Allows manual triggering of the workflow
 
 jobs:
@@ -71,4 +71,6 @@ jobs:
       FUNCTION_STORAGE_ACCOUNT_NAME: ${{ vars.FUNCTION_STORAGE_ACCOUNT_NAME }}
       APPSERVICE_PLAN_NAME: ${{ vars.APPSERVICE_PLAN_NAME }}
       FUNCTIONAPP_PLAN_NAME: ${{ vars.FUNCTIONAPP_PLAN_NAME }}
+      STORAGE_ACC_NAME: ${{ vars.STORAGE_ACC_NAME }}
+      STORAGE_CON_NAME: ${{ vars.STORAGE_CON_NAME }}
       ENV: "prod"
