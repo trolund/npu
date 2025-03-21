@@ -57,6 +57,13 @@ jobs:
         with:
           name: build-func-app
           path: ./build-func-app
+      - name: Debug inputs and secrets
+        run: |
+          echo "AZURE_RESOURCE_GROUP: ${{ secrets.AZURE_RESOURCE_GROUP }}"
+          echo "AZURE_LOCATION: ${{ secrets.AZURE_LOCATION }}"
+          echo "AZURE_WEBAPP_NAME: ${{ inputs.AZURE_WEBAPP_NAME }}"
+          echo "AZURE_FUNCTIONAPP_NAME: ${{ inputs.AZURE_FUNCTIONAPP_NAME }}"
+          echo "COSMOS_DB_ACCOUNT_NAME: ${{ inputs.COSMOS_DB_ACCOUNT_NAME }}"
 
       - name: Create infrastructure
         run: |
