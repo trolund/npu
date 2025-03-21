@@ -66,18 +66,18 @@ resource appService 'Microsoft.Web/sites@2022-03-01' = {
     siteConfig: {
       appSettings: [
         {
-          name: 'COSMOS_DB_CONNECTION_STRING'
+          name: 'COSMOS__DB_CONNECTION_STRING'
           value: cosmosDbAccount.listConnectionStrings().connectionStrings[0].connectionString
         }
-        { name: 'COSMOS_DB_NAME', value: databaseName }
-        { name: 'COSMOS_CON_NAME', value: containerName }
+        { name: 'COSMOS__DB_NAME', value: databaseName }
+        { name: 'COSMOS__CON_NAME', value: containerName }
         {
-          name: 'STORAGE_CONNECTION_KEY'
+          name: 'STORAGE__CONNECTION_KEY'
           value: storageAccount.listKeys().keys[0].value
         }
-        { name: 'STORAGE_ACCOUNT_NAME', value: storageAccount.name }
+        { name: 'STORAGE__ACCOUNT_NAME', value: storageAccount.name }
         {
-          name: 'STORAGE_CON_NAME'
+          name: 'STORAGE__CON_NAME'
           value: storageContainerName
         }
       ]
@@ -118,11 +118,11 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
         }
         {
           name: 'FUNCTIONS_WORKER_RUNTIME'
-          value: 'dotnet-isolated' // ✅ Correct for .NET Isolated
+          value: 'dotnet-isolated' 
         }
         {
           name: 'DOTNET_ISOLATED_VERSION'
-          value: '8.0' // ✅ Ensure correct .NET version (adjust if needed)
+          value: '8.0' 
         }
         {
           name: 'COSMOS_DB_CONNECTION_STRING'

@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Identity.Web;
 using Microsoft.OpenApi.Models;
 using NPU.Data.Base;
+using NPU.Infrastructure.Config;
 
 namespace NPU;
 
@@ -10,10 +11,18 @@ public static class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+        
+        var cosmosSettings = builder.Configuration.GetSection("COSMOS").Get<CosmosSettings>();
+        var storageSettings = builder.Configuration.GetSection("STORAGE").Get<StorageSettings>();
+        
+        if (cosmosSettings == null || storageSettings == null)
+        {
+            throw new ArgumentException("Cosmos and Storage settings are required");
+        }
 
         // using azure ad
-        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
+        // builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        //     .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
 
         // Add services to the container.
         builder.Services.AddControllers();
@@ -29,7 +38,6 @@ public static class Program
                 "v1",
                 new OpenApiInfo() { Title = "NPU API", Version = "v1.0.0" }
             );
-
             options.AddSecurityDefinition(
                 "Bearer",
                 new OpenApiSecurityScheme
@@ -46,7 +54,6 @@ public static class Program
                     Scheme = "Bearer"
                 }
             );
-
             options.AddSecurityRequirement(
                 new OpenApiSecurityRequirement()
                 {
@@ -67,6 +74,9 @@ public static class Program
                 }
             );
         });
+
+        builder.Services.AddSingleton(storageSettings);
+        builder.Services.AddSingleton(cosmosSettings);
 
         builder.Services.AddSingleton<ICosmosDbService>(_ =>
         {
