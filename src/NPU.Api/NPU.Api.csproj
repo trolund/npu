@@ -34,9 +34,9 @@
   </ItemGroup>
 
   <Target Name="CreateAppDataFolder" BeforeTargets="Publish">
-    <Exec Command="npm run build" WorkingDirectory="../LockNote.Client" />
+    <Exec Command="npm run build" WorkingDirectory="../NPU.Client" />
     <ItemGroup>
-      <CopyDist Include="../LockNote.Client/dist/**/*.*" />
+      <CopyDist Include="../NPU.Client/dist/**/*.*" />
     </ItemGroup>
     <Copy SourceFiles="@(CopyDist)"
       DestinationFiles="@(CopyDist->'$(PublishDir)\%(RecursiveDir)%(Filename)%(Extension)')" />

@@ -293,4 +293,4 @@ __pycache__/
 *.btm.cs
 *.odx.cs
 *.xsd.cs
-LockNote/Configure.secrets.cs
+NPU/Configure.secrets.cs
