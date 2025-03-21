@@ -1,4 +1,4 @@
-name: Build and Publish Lock-note
+name: Build and Publish npu
 
 on:
   workflow_call:
@@ -19,7 +19,7 @@ jobs:
           node-version: "18"
 
       - name: Install Dependencies
-        working-directory: ./src/LockNote.Client
+        working-directory: ./src/NPU.Client
         run: npm ci
 
       # Setup .NET
@@ -46,7 +46,7 @@ jobs:
       # Build and Publish Function App
       # TODO: remove build
       - name: Build and publish function app project
-        working-directory: ./src/LockNote.FuncApp
+        working-directory: ./src/NPU.FuncApp
         run: |
           dotnet build --configuration Release
           dotnet publish --configuration Release --output ./publish-func-app
@@ -63,4 +63,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build-func-app
-          path: ./src/LockNote.FuncApp/publish-func-app
+          path: ./src/NPU.FuncApp/publish-func-app

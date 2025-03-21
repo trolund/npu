@@ -1,4 +1,4 @@
-name: Deploy Lock-note to Azure
+name: Deploy npu to Azure
 
 on:
   #pull_request: # Trigger the workflow on pull requests
