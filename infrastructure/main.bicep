@@ -72,8 +72,13 @@ resource appService 'Microsoft.Web/sites@2022-03-01' = {
         { name: 'COSMOS_DB_NAME', value: databaseName }
         { name: 'COSMOS_CON_NAME', value: containerName }
         {
-          name: 'STORAGE_CONNECTION_STRING'
-          value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${storageAccount.listKeys().keys[0].value};EndpointSuffix=core.windows.net'
+          name: 'STORAGE_CONNECTION_KEY'
+          value: storageAccount.listKeys().keys[0].value
+        }
+        { name: 'STORAGE_ACCOUNT_NAME', value: storageAccount.name }
+        {
+          name: 'STORAGE_CON_NAME'
+          value: storageContainerName
         }
       ]
     }
