@@ -5,7 +5,7 @@ using NPU.Infrastructure.Dtos;
 
 namespace NPU.Bl;
 
-public class NotesService(NoteRepository notesRepository, ILogger<NotesService> logger)
+public class NpuService(NoteRepository notesRepository, ILogger<NpuService> logger)
 {
     private async Task UpdateReadCounterNoteAsync(Note? note)
     {

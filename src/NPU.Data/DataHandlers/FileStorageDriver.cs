@@ -2,7 +2,7 @@ namespace NPU.Data.DataHandlers;
 
 public class FileStorageDriver: IBlobStorageDriver
 {
-    public Task<string> ReadBlob(string filePath)
+    public Task<string> ReadFileAsync(string filePath)
     {
         try
         {
@@ -14,7 +14,7 @@ public class FileStorageDriver: IBlobStorageDriver
         }
     }
 
-    public async Task WriteBlob(string filePath, Stream data)
+    public async Task WriteFileAsync(string filePath, Stream data)
     {
         if (!Directory.Exists(filePath))
         {

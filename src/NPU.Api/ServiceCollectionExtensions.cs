@@ -11,7 +11,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddScoped(typeof(IRepository<>), typeof(CosmosRepository<>));
         services.AddScoped<NoteRepository>();
-        services.AddScoped<NotesService>();
+        services.AddScoped<NpuService>();
         
 
         return services;

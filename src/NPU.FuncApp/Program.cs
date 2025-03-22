@@ -15,21 +15,8 @@ builder.Services
     .ConfigureFunctionsApplicationInsights();
 
 // set up services
-builder.Services.AddSingleton<ICosmosDbService>(_ =>
-{
-    var connectionString = builder.Configuration.GetSection("COSMOS_DB_CONNECTION_STRING").Value;
-    var dbName = builder.Configuration.GetSection("COSMOS_DB_NAME").Value;
-    var containerName = builder.Configuration.GetSection("COSMOS_CON_NAME").Value;
-    if (dbName == null || containerName == null)
-    {
-        throw new ArgumentException("Database name and container name are required");
-    }
-
-    var settings = new CosmosDbSettings(DatabaseName: dbName, containerName);
-    return new CosmosDbService(connectionString, settings);
-});
-
+builder.Services.AddSingleton<ICosmosDbService, CosmosDbService>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(CosmosRepository<>));
-builder.Services.AddScoped<NotesService>();
+builder.Services.AddScoped<NpuService>();
 
 builder.Build().Run();

@@ -125,11 +125,11 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
           value: '8.0' 
         }
         {
-          name: 'COSMOS_DB_CONNECTION_STRING'
+          name: 'COSMOS__DB_CONNECTION_STRING'
           value: cosmosDbAccount.listConnectionStrings().connectionStrings[0].connectionString
         }
-        { name: 'COSMOS_DB_NAME', value: databaseName }
-        { name: 'COSMOS_CON_NAME', value: containerName }
+        { name: 'COSMOS__DB_NAME', value: databaseName }
+        { name: 'COSMOS__CON_NAME', value: containerName }
       ]
     }
   }

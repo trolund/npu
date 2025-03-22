@@ -1,42 +1,20 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NPU.Bl;
+using NPU.Infrastructure.Dtos;
 
 namespace NPU.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class NPUController(NotesService notesService) : ControllerBase
+    public class NpuController(NpuService npuService, FileUploadService fileUploadService) : ControllerBase
     {
-        
         [HttpPost]
-        public async Task<IActionResult> Upload(IFormFile file)
+        public async Task<IActionResult> CreateNpu(CreateNpuRequest request)
         {
-            if (file == null || file.Length == 0)
-            {
-                return BadRequest("No file selected");
-            }
-
-            // Ensure the uploads directory exists
-            if (!Directory.Exists(""))
-            {
-                Directory.CreateDirectory("");
-            }
-
-            // Generate a unique filename to avoid conflicts
-            string fileName = Path.GetFileName(file.FileName);
-            string filePath = Path.Combine("", fileName);
-
-            // Save the file
-            using (var stream = new FileStream(filePath, FileMode.Create))
-            {
-                await file.CopyToAsync(stream);
-            }
-
+            var fileName = await fileUploadService.UploadFileAsync(request.File.FileName, request.File.OpenReadStream());
             return Ok($"File uploaded successfully: {fileName}");
         }
-        
-        
+
         [HttpGet]
         public async Task<ActionResult> GetNote()
         {

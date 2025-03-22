@@ -1,10 +1,11 @@
 using Microsoft.Azure.Cosmos;
+using NPU.Infrastructure.Config;
 
 namespace NPU.Data.Base;
 
-public class CosmosDbService(string? connectionString, CosmosDbSettings settings) : ICosmosDbService
+public class CosmosDbService(CosmosSettings config) : ICosmosDbService
 {
-    private readonly CosmosClient _cosmosClient = connectionString != null ? new CosmosClient(connectionString,
+    private readonly CosmosClient _cosmosClient = config.DB_CONNECTION_STRING != null ? new CosmosClient(config.DB_CONNECTION_STRING,
         new CosmosClientOptions
         {
             ApplicationName = "LockNote",
@@ -12,8 +13,8 @@ public class CosmosDbService(string? connectionString, CosmosDbSettings settings
             LimitToEndpoint = true
         }) : throw new ArgumentException("Connection string is required");
 
-    private readonly string _databaseName = settings.DatabaseName;
-    private readonly string _containerName = settings.ContainerName;
+    private readonly string _databaseName = config.DB_NAME;
+    private readonly string _containerName = config.CON_NAME;
 
     public async Task<Container> GetContainerAsync()
     {

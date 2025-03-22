@@ -1,16 +1,17 @@
 ﻿using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
+using NPU.Infrastructure.Config;
 
 namespace NPU.Data.DataHandlers;
 
-public class BlobStorageDriver(string connectionKey, string accountName, string containerName): IBlobStorageDriver
+public class BlobStorageDriver(StorageSettings config): IBlobStorageDriver
 {
-    private readonly string _connectionString = $"DefaultEndpointsProtocol=https;AccountName={accountName};AccountKey={connectionKey};EndpointSuffix=core.windows.net";
+    private readonly string _connectionString = $"DefaultEndpointsProtocol=https;AccountName={config.ACCOUNT_NAME};AccountKey={config.CONNECTION_KEY};EndpointSuffix=core.windows.net";
     
-    public async Task<string> ReadBlob(string blobName)
+    public async Task<string> ReadFileAsync(string blobName)
     {
         var blobServiceClient = new BlobServiceClient(_connectionString);
-        var containerClient = blobServiceClient.GetBlobContainerClient(containerName);
+        var containerClient = blobServiceClient.GetBlobContainerClient(config.CON_NAME);
         var blobClient = containerClient.GetBlobClient(blobName);
 
         BlobDownloadInfo download = await blobClient.DownloadAsync();
@@ -19,10 +20,10 @@ public class BlobStorageDriver(string connectionKey, string accountName, string 
         return await reader.ReadToEndAsync();
     }
     
-    public async Task WriteBlob(string blobName, Stream data)
+    public async Task WriteFileAsync(string blobName, Stream data)
     {
         var blobServiceClient = new BlobServiceClient(_connectionString);
-        var containerClient = blobServiceClient.GetBlobContainerClient(containerName);
+        var containerClient = blobServiceClient.GetBlobContainerClient(config.CON_NAME);
         var blobClient = containerClient.GetBlobClient(blobName);
         
         await blobClient.UploadAsync(data);
