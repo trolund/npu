@@ -8,7 +8,7 @@ public class CosmosDbService(CosmosSettings config) : ICosmosDbService
     private readonly CosmosClient _cosmosClient = config.DB_CONNECTION_STRING != null ? new CosmosClient(config.DB_CONNECTION_STRING,
         new CosmosClientOptions
         {
-            ApplicationName = "LockNote",
+            ApplicationName = "NPU",
             ConnectionMode = ConnectionMode.Gateway,
             LimitToEndpoint = true
         }) : throw new ArgumentException("Connection string is required");

@@ -1,24 +1,28 @@
 using Microsoft.AspNetCore.Mvc;
 using NPU.Bl;
+using NPU.Data.Model;
 using NPU.Infrastructure.Dtos;
 
 namespace NPU.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class NpuController(NpuService npuService, FileUploadService fileUploadService) : ControllerBase
+    public class NpuController(NpuService npuService) : ControllerBase
     {
         [HttpPost]
         public async Task<IActionResult> CreateNpu(CreateNpuRequest request)
         {
-            var fileName = await fileUploadService.UploadFileAsync(request.File.FileName, request.File.OpenReadStream());
-            return Ok($"File uploaded successfully: {fileName}");
+            var createdNpu = await npuService.CreateNpuWithImagesAsync(request.Name, request.Description ?? "", request.Images.Select(i => (i.FileName, i.OpenReadStream())));
+            
+            // TODO link to the created NPU
+            return Created($"/api/npu/{createdNpu.Id}", createdNpu);
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetNote()
+        public async Task<ActionResult<PaginatedResponse<Npu>>> GetNpus(string searchTerm, int page, int pageSize,
+            bool ascending, string sortOrderKey)
         {
-            return Ok("Works!!!!");
+            return Ok(await npuService.GetNpuPaginatedAsync(searchTerm, page, pageSize, ascending, sortOrderKey));
         }
     }
 }

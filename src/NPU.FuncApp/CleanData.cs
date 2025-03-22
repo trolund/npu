@@ -9,7 +9,7 @@ public class CleanData(ILogger<CleanData> logger, NpuService npuService)
     [Function("CleanData")]
     public void Run([TimerTrigger("0 0 0 * * *")] TimerInfo myTimer)
     {
-        _ = npuService.DeleteAllOverMonthOld();
+        //_ = npuService.DeleteAllOverMonthOld();
         logger.LogInformation("Deleted all old notes");
     }
 }

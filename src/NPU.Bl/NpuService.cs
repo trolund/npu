@@ -5,81 +5,51 @@ using NPU.Infrastructure.Dtos;
 
 namespace NPU.Bl;
 
-public class NpuService(NoteRepository notesRepository, ILogger<NpuService> logger)
+public class NpuService(NpuRepository notesRepository, FileUploadService fileUploadService, ILogger<NpuService> logger)
 {
-    private async Task UpdateReadCounterNoteAsync(Note? note)
+    public async Task<Npu> CreateNpuAsync(Npu npu)
     {
-        if (note?.Id is null)
-        {
-            throw new ArgumentException("Note id is required");
-        }
-
-        var noteModel = await notesRepository.GetNoteAsync(note.Id);
-        
-        noteModel!.ReadBeforeDelete--;
-
-        if (noteModel.ReadBeforeDelete <= 0)
-        {
-            await DeleteNoteAsync(note.Id);
-        }
-        else
-        {
-            await notesRepository.UpdateNoteAsync(noteModel);
-        }
+        return await notesRepository.CreateNoteAsync(npu);
     }
-
-    public async Task<NoteDto?> CreateNoteAsync(NoteDto note)
+    
+    public async Task<Npu> CreateNpuWithImagesAsync(string name, string description, IEnumerable<(string, Stream)> images)
     {
-        var noteModel = new Note
+        var links = new List<string>();
+        foreach (var (fileName, stream) in images)
         {
-            ReadBeforeDelete = note.ReadBeforeDelete == 1 ? 1 : note.ReadBeforeDelete,
-            Content = note.Content,
-            CreatedAt = DateTime.UtcNow
-        };
-
-        if (note.Password is null)
-        {
-            return NoteDto.FromModel(await notesRepository.CreateNoteAsync(noteModel));
-        }
-
-        var (salt, hashed) = PasswordHashService.HashPassword(note.Password);
-
-        noteModel.PasswordHash = hashed;
-        noteModel.Salt = salt;
-        noteModel.Content = Encryption.Encrypt(note.Content, note.Password);
-        return NoteDto.FromModel(await notesRepository.CreateNoteAsync(noteModel));
-    }
-
-    public async Task<Note?> GetNoteAsync(string id, string password = "")
-    {
-        var entity = await notesRepository.GetNoteAsync(id);
-
-        // if a password is set but not correct, return null
-        if (entity?.PasswordHash != null &&
-            !PasswordHashService.VerifyPassword(password, entity.Salt!, entity.PasswordHash))
-        {
-            return new Note()
-            {
-                Content = "Enter the correct password to view the note", Id = "passwordIncorrect",
-                CreatedAt = DateTime.UtcNow
-            };
-        }
-
-        // if a password is set and correct, decrypt the content
-        if (entity?.PasswordHash != null)
-        {
-            entity.Content = Encryption.Decrypt(entity.Content, password);
-        }
-
-        if (entity is not null)
-        {
-            await UpdateReadCounterNoteAsync(entity);
+            var link = await fileUploadService.UploadFileAsync(fileName, stream);
+            links.Add(link);
         }
         
-        return entity;
+        return await notesRepository.CreateNoteAsync(new Npu()
+        {
+            Name = name,
+            Description = description,
+            File = links.ToArray()
+        });
     }
 
-    public async Task<IEnumerable<Note>> GetAllNotesAsync()
+    public async Task<PaginatedResponse<Npu>> GetNpuPaginatedAsync(string searchTerm, int page, int pageSize,
+        bool ascending, string sortOrderKey)
+    {
+        var (items, totalCount) = await notesRepository
+            .GetNpuPaginatedAsync(searchTerm, page, pageSize, ascending, sortOrderKey);
+
+        return new PaginatedResponse<Npu>(
+            Items: items,
+            TotalCount: totalCount,
+            PageNumber: page,
+            PageSize: pageSize,
+            NumberOfPages: (int)Math.Ceiling((double)totalCount / pageSize)
+        );
+    }
+
+    public async Task<Npu> UpdateNoteAsync(Npu npu)
+    {
+        return await notesRepository.UpdateAsync(npu);
+    }
+
+    public async Task<IEnumerable<Npu>> GetAllNotesAsync()
     {
         return await notesRepository.GetAllNotesAsync();
     }
@@ -87,11 +57,5 @@ public class NpuService(NoteRepository notesRepository, ILogger<NpuService> logg
     public async Task DeleteNoteAsync(string id)
     {
         await notesRepository.DeleteNoteAsync(id);
-    }
-
-    public async Task DeleteAllOverMonthOld()
-    {
-        var items = await notesRepository.DeleteAllOverMonthOld();
-        logger.LogInformation("Deleted {Count} notes", items.Count());
     }
 }

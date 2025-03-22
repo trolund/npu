@@ -1,10 +1,8 @@
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Http;
-using NPU.Infrastructure.CustomDataAnnotations;
 
-namespace NPU.Infrastructure.Dtos;
+namespace NPU.Data.Model;
 
-public record CreateNpuRequest
+public class Npu : BaseItem
 {
     [Required]
     [StringLength(70, ErrorMessage = "Message should not be longer the {70} chars")]
@@ -13,8 +11,7 @@ public record CreateNpuRequest
     [StringLength(200, ErrorMessage = "Message should not be longer the {200} chars")]
     public string? Description { get; init; }
     
-    [Required]
-    [MaxFileSize(2)]
-    [FileExtension(".gif, .jpg, .jpeg, .png")]
-    public required IFormFile[] Images { get; init; }
+    public required string[] File { get; init; } = [];
+    
+    public override string PartitionKey { get; protected init; } = "npu";
 }
