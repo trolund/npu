@@ -4,7 +4,7 @@
 The system must provide the following core functionalities:
 - **User Uploads:** Users can upload images and descriptions of their NPU creations.
 - **Scoring System:** Users can score creations based on creativity and uniqueness.
-- **Search Functionality:** Users can search for creations using element names.
+- **Search Functionality:** Users can search for creations using element names. ✅
 - **Multi-Platform Support:** The backend should be consumable by both web and mobile clients. ✅
 
 ## **2. Non-Functional Requirements**

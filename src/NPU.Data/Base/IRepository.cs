@@ -13,7 +13,7 @@ public interface IRepository<T> where T : BaseItem
     /// <summary>
     /// Query the repository of type T with a LINQ expression
     /// </summary>
-    Task<IEnumerable<T>> QueryAsync<T>(Expression<Func<T, bool>> predicate);
+    Task<IEnumerable<T>> QueryAsync(Expression<Func<T, bool>> predicate);
 
     /// <summary>
     /// Delete an item from the repository of type T

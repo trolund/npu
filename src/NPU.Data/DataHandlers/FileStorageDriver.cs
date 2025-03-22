@@ -14,19 +14,14 @@ public class FileStorageDriver: IBlobStorageDriver
         }
     }
 
-    public async Task WriteFileAsync(string filePath, Stream data)
+    public async Task WriteFileAsync(string path, string fileName,  Stream data)
     {
-        if (!Directory.Exists(filePath))
+        if (!Directory.Exists(path))
         {
-            Directory.CreateDirectory(filePath);
-            Console.WriteLine($"Directory '{filePath}' created successfully.");
+            Directory.CreateDirectory(path);
         }
-        else
-        {
-            Console.WriteLine($"Directory '{filePath}' already exists.");
-        }
-
-        await using var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write);
+        
+        await using var fileStream = new FileStream(Path.Combine(path, fileName), FileMode.Create, FileAccess.Write);
         await data.CopyToAsync(fileStream);
     }
 }

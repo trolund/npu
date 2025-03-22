@@ -9,6 +9,7 @@ namespace NPU.Data.Base;
 public class CosmosRepository<T>(ICosmosDbService cosmosDbService) : IRepository<T> where T : BaseItem
 {
     private readonly Container _container = cosmosDbService.GetContainerAsync().GetAwaiter().GetResult();
+    private readonly string _key = typeof(T).Name.ToLower();
 
     // CREATE
     public async Task<T> AddAsync(T entity)
@@ -21,7 +22,7 @@ public class CosmosRepository<T>(ICosmosDbService cosmosDbService) : IRepository
     {
         try
         {
-            var response = await _container.ReadItemAsync<T>(id, new PartitionKey(id));
+            var response = await _container.ReadItemAsync<T>(id, new PartitionKey(_key));
             return response.Resource;
         }
         catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
@@ -43,7 +44,7 @@ public class CosmosRepository<T>(ICosmosDbService cosmosDbService) : IRepository
     }
 
     // QUERY with LINQ
-    public async Task<IEnumerable<T>> QueryAsync<T>(Expression<Func<T, bool>> predicate)
+    public async Task<IEnumerable<T>> QueryAsync(Expression<Func<T, bool>> predicate)
     {
         var query = _container.GetItemLinqQueryable<T>(allowSynchronousQueryExecution: false)
             .Where(predicate)
@@ -72,6 +73,16 @@ public class CosmosRepository<T>(ICosmosDbService cosmosDbService) : IRepository
         return results;
     }
     
+    /// <summary>
+    /// query the repository with pagination
+    /// WARNING: This method is not efficient and should not be used in production
+    /// </summary>
+    /// <param name="filterPredicate"></param>
+    /// <param name="sortOrderKey"></param>
+    /// <param name="ascending"></param>
+    /// <param name="offset"></param>
+    /// <param name="pageSize"></param>
+    /// <returns></returns>
     public async Task<(IEnumerable<T> Items, int)> QueryWithPaginationAsync(
         Expression<Func<T, bool>> filterPredicate,
         string? sortOrderKey,
@@ -79,10 +90,9 @@ public class CosmosRepository<T>(ICosmosDbService cosmosDbService) : IRepository
         int offset = 0,
         int pageSize = 10)
     {
-        // DO everything in memory :(
+        // Do everything in memory :(
         var query = (await GetAllAsync()).AsQueryable();
         
-        // Apply sorting if provided
         if (!string.IsNullOrEmpty(sortOrderKey))
         {
             query = ApplySorting(query, sortOrderKey, ascending);
@@ -101,24 +111,15 @@ public class CosmosRepository<T>(ICosmosDbService cosmosDbService) : IRepository
     
     private static IQueryable<T> ApplySorting(IQueryable<T> query, string sortOrderKey, bool ascending)
     {
-        var param = Expression.Parameter(typeof(T), "x");
         var property = typeof(T).GetProperty(sortOrderKey, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
-
         if (property == null)
         {
-            throw new ArgumentException($"Property '{sortOrderKey}' not found in type '{typeof(T).Name}'");
+            throw new ArgumentException($"Property {sortOrderKey} not found on type {typeof(T).Name}");
         }
 
-        var keySelector = Expression.Lambda(Expression.Property(param, property), param);
-        var methodName = ascending ? "OrderBy" : "OrderByDescending";
-
-        var sortedQuery = typeof(Queryable)
-            .GetMethods()
-            .First(m => m.Name == methodName && m.GetParameters().Length == 2)
-            .MakeGenericMethod(typeof(T), property.PropertyType)
-            .Invoke(null, new object[] { query, keySelector });
-
-        return (IQueryable<T>)sortedQuery!;
+        return ascending
+            ? query.OrderBy(x => property.GetValue(x))
+            : query.OrderByDescending(x => property.GetValue(x));
     }
 
 }

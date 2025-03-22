@@ -29,7 +29,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\NPU.Bl\NPU.Bl.csproj" />
-    <ProjectReference Include="..\NPU.Data\NPU.Data.csproj" />
     <ProjectReference Include="..\NPU.Infrastructure\NPU.Infrastructure.csproj" />
   </ItemGroup>
 

@@ -11,7 +11,7 @@ public class Npu : BaseItem
     [StringLength(200, ErrorMessage = "Message should not be longer the {200} chars")]
     public string? Description { get; init; }
     
-    public required string[] File { get; init; } = [];
+    public required string[] Images { get; init; } = [];
     
-    public override string PartitionKey { get; protected init; } = "npu";
+    // public override string PartitionKey { get; protected init; } = "npu";
 }

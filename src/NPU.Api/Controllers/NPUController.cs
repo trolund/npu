@@ -14,17 +14,31 @@ namespace NPU.Controllers
         {
             var createdNpu = await npuService.CreateNpuWithImagesAsync(request.Name, request.Description ?? "",
                 request.Images.Select(i => (i.FileName, i.OpenReadStream())));
+            
+            return CreatedAtAction(
+                nameof(GetNpu),
+                new { id = createdNpu.Id },
+                createdNpu);
+        }
 
-            // TODO link to the created NPU
-            return Created($"/api/npu/{createdNpu.Id}", createdNpu);
+        [HttpGet("{id}")]
+        public async Task<ActionResult<IEnumerable<NpuResponse>>> GetNpu(string id)
+        {
+            var item = await npuService.GetNpuAsync(id);
+            if (item == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(item);
         }
 
         [HttpGet]
-        public async Task<ActionResult<PaginatedResponse<Npu>>> GetNpus(
+        public async Task<ActionResult<PaginatedResponse<NpuResponse>>> GetNpus(
             string? searchTerm,
-            string? sortOrderKey,
+            string? sortOrderKey = nameof(Npu.CreatedAt),
             bool ascending = true,
-            int page = 1, 
+            int page = 1,
             int pageSize = 10
         )
         {

@@ -20,11 +20,11 @@ public class BlobStorageDriver(StorageSettings config): IBlobStorageDriver
         return await reader.ReadToEndAsync();
     }
     
-    public async Task WriteFileAsync(string blobName, Stream data)
+    public async Task WriteFileAsync(string path, string fileName, Stream data)
     {
         var blobServiceClient = new BlobServiceClient(_connectionString);
         var containerClient = blobServiceClient.GetBlobContainerClient(config.CON_NAME);
-        var blobClient = containerClient.GetBlobClient(blobName);
+        var blobClient = containerClient.GetBlobClient(Path.Combine(path, fileName));
         
         await blobClient.UploadAsync(data);
     }

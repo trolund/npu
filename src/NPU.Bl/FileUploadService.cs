@@ -8,8 +8,8 @@ public class FileUploadService(IBlobStorageDriver storageDriver)
 
     public async Task<string> UploadFileAsync(string fileName, Stream fileStream)
     {
-        var filePath = $"{Path}/{fileName}";
-        await storageDriver.WriteFileAsync(filePath, fileStream);
+        var filePath = $"{Path}/{DateTime.Now:yyyyMMddHHmmss}_{fileName}";
+        await storageDriver.WriteFileAsync(Path, fileName, fileStream);
         return filePath;
     }
 }

@@ -19,17 +19,20 @@ public sealed class FileExtensionAttribute(string allowedFileTypes) : Validation
 
     public override bool IsValid(object? value)
     {
-        return value switch
+        var list = value switch
         {
-            null => false,
-            IFormFile file => CheckFileType(file.FileName),
-            _ => false
+            null => [],
+            IFormFile[] files => files.ToArray(),
+            IFormFile file => [file],
+            _ => []
         };
+        
+        return list.All(CheckFileType);
     }
     
-    private bool CheckFileType(string fileName)
+    private bool CheckFileType(IFormFile file)
     {
-        var ext = Path.GetExtension(fileName).ToLowerInvariant();
+        var ext = Path.GetExtension(file.FileName).ToLowerInvariant();
         return AllowedFileTypes.Contains(ext, StringComparer.OrdinalIgnoreCase);
     }
 
