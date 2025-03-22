@@ -24,16 +24,19 @@ public class NpuRepository(IRepository<Npu> notesRepository)
     {
         return await notesRepository.GetAllAsync();
     }
-    
+
     public async Task DeleteNoteAsync(string id)
     {
         await notesRepository.DeleteAsync(id);
     }
-    
-    public async Task<(IEnumerable<Npu> Items, int)> GetNpuPaginatedAsync(string searchTerm, int page, int pageSize, bool ascending, string sortOrderKey)
+
+    public async Task<(IEnumerable<Npu> Items, int)> GetNpuPaginatedAsync(string? searchTerm, int page, int pageSize,
+        bool ascending, string? sortOrderKey)
     {
-         return await notesRepository.QueryWithPaginationAsync(
-            npu => npu.Name.Contains(searchTerm) || npu.Name.Contains(searchTerm),
+        return await notesRepository.QueryWithPaginationAsync(
+            npu => string.IsNullOrEmpty(searchTerm) ||
+                   npu.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) || (npu.Description != null &&
+                       npu.Description.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)),
             sortOrderKey,
             ascending,
             offset: page - 1,

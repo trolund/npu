@@ -79,9 +79,8 @@ public class CosmosRepository<T>(ICosmosDbService cosmosDbService) : IRepository
         int offset = 0,
         int pageSize = 10)
     {
-        var query = _container
-            .GetItemLinqQueryable<T>(allowSynchronousQueryExecution: false)
-            .AsQueryable();
+        // DO everything in memory :(
+        var query = (await GetAllAsync()).AsQueryable();
         
         // Apply sorting if provided
         if (!string.IsNullOrEmpty(sortOrderKey))

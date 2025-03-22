@@ -29,8 +29,8 @@ public class NpuService(NpuRepository notesRepository, FileUploadService fileUpl
         });
     }
 
-    public async Task<PaginatedResponse<Npu>> GetNpuPaginatedAsync(string searchTerm, int page, int pageSize,
-        bool ascending, string sortOrderKey)
+    public async Task<PaginatedResponse<Npu>> GetNpuPaginatedAsync(string? searchTerm, int page, int pageSize,
+        bool ascending, string? sortOrderKey)
     {
         var (items, totalCount) = await notesRepository
             .GetNpuPaginatedAsync(searchTerm, page, pageSize, ascending, sortOrderKey);

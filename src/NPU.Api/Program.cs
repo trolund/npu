@@ -11,10 +11,16 @@ public static class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-        
+
+        builder.Host.UseDefaultServiceProvider((context, options) =>
+        {
+            // force scope validation in development
+            options.ValidateScopes = context.HostingEnvironment.IsDevelopment();
+        });
+
         var cosmosSettings = builder.Configuration.GetSection("COSMOS").Get<CosmosSettings>();
         var storageSettings = builder.Configuration.GetSection("STORAGE").Get<StorageSettings>();
-        
+
         if (cosmosSettings == null || storageSettings == null)
         {
             throw new ArgumentException("Cosmos and Storage settings are required");
@@ -79,7 +85,7 @@ public static class Program
         builder.Services.AddSingleton(cosmosSettings);
 
         builder.Services.AddScoped<IBlobStorageDriver, FileStorageDriver>();
-        
+
         builder.Services.AddScoped<FileUploadService>();
         builder.Services.AddSingleton<ICosmosDbService, CosmosDbService>();
 
