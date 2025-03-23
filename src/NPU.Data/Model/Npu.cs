@@ -12,6 +12,4 @@ public class Npu : BaseItem
     public string? Description { get; init; }
     
     public required string[] Images { get; init; } = [];
-    
-    // public override string PartitionKey { get; protected init; } = "npu";
 }

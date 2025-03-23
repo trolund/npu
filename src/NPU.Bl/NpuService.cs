@@ -5,10 +5,14 @@ using NPU.Infrastructure.Dtos;
 
 namespace NPU.Bl;
 
-public class NpuService(NpuRepository npuRepository, FileUploadService fileUploadService, ILogger<NpuService> logger)
+public class NpuService(
+    NpuRepository npuRepository,
+    ScoreRepository scoreRepository,
+    FileUploadService fileUploadService,
+    ILogger<NpuService> logger)
 {
-    
-    public async Task<Npu> CreateNpuWithImagesAsync(string name, string description, IEnumerable<(string, Stream)> images)
+    public async Task<Npu> CreateNpuWithImagesAsync(string name, string description,
+        IEnumerable<(string, Stream)> images)
     {
         // optimistic file upload
         var links = new List<string>();
@@ -16,9 +20,8 @@ public class NpuService(NpuRepository npuRepository, FileUploadService fileUploa
         {
             var link = await fileUploadService.UploadFileAsync(fileName, stream);
             links.Add(link);
-            
         }
-        
+
         return await npuRepository.CreateNpuAsync(new Npu()
         {
             Name = name,
@@ -34,7 +37,7 @@ public class NpuService(NpuRepository npuRepository, FileUploadService fileUploa
             .GetNpusPaginatedAsync(searchTerm, page, pageSize, ascending, sortOrderKey);
 
         return new PaginatedResponse<NpuResponse>(
-            Items: items.Select(NpuResponse.FromModel),
+            Items: items.Select(e => NpuResponse.FromModel(e)),
             TotalCount: totalCount,
             PageNumber: page,
             PageSize: pageSize,
@@ -56,10 +59,27 @@ public class NpuService(NpuRepository npuRepository, FileUploadService fileUploa
     {
         await npuRepository.DeleteNoteAsync(id);
     }
-    
+
+    public async Task<Score?> GiveScoreAsync(string npuId, CreateScoreRequest score)
+    {
+        var npu = await npuRepository.GetNpuAsync(npuId);
+        if (npu == null)
+        {
+            return null;
+        }
+
+        return await scoreRepository.CreateScoreAsync(new Score
+        {
+            NpuId = npuId,
+            Creativity = score.Creativity,
+            Uniqueness = score.Uniqueness
+        });
+    }
+
     public async Task<NpuResponse?> GetNpuAsync(string id)
     {
+        var score = await scoreRepository.GetAverageScoreForNpuIdAsync(id);
         var npu = await npuRepository.GetNpuAsync(id);
-        return npu == null ? null : NpuResponse.FromModel(npu);
+        return npu == null ? null : NpuResponse.FromModel(npu, score is null ? null : ScoreResponse.FromModel(score));
     }
 }

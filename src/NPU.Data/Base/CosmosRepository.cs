@@ -14,7 +14,7 @@ public class CosmosRepository<T>(ICosmosDbService cosmosDbService) : IRepository
     // CREATE
     public async Task<T> AddAsync(T entity)
     {
-        return (await _container.CreateItemAsync(entity, new PartitionKey((entity as dynamic).Id))).Resource;
+        return (await _container.CreateItemAsync(entity, new PartitionKey(_key))).Resource;
     }
 
     // READ by ID
@@ -34,13 +34,13 @@ public class CosmosRepository<T>(ICosmosDbService cosmosDbService) : IRepository
     // UPDATE
     public async Task<T> UpdateAsync(string id, T entity)
     {
-        return (await _container.ReplaceItemAsync(entity, id, new PartitionKey(id))).Resource;
+        return (await _container.ReplaceItemAsync(entity, id, new PartitionKey(_key))).Resource;
     }
 
     // DELETE
     public async Task<T> DeleteAsync(string id)
     {
-        return (await _container.DeleteItemAsync<T>(id, new PartitionKey(id))).Resource;
+        return (await _container.DeleteItemAsync<T>(id, new PartitionKey(_key))).Resource;
     }
 
     // QUERY with LINQ
@@ -120,6 +120,23 @@ public class CosmosRepository<T>(ICosmosDbService cosmosDbService) : IRepository
         return ascending
             ? query.OrderBy(x => property.GetValue(x))
             : query.OrderByDescending(x => property.GetValue(x));
+    }
+    
+    public async Task<IEnumerable<TX>> QueryAsync<TX>(QueryDefinition queryDefinition)
+    {
+        var query = _container.GetItemQueryIterator<TX>(queryDefinition);
+        List<TX> results = [];
+        while (query.HasMoreResults)
+        {
+            var response = await query.ReadNextAsync();
+            results.AddRange(response);
+        }
+        return results;
+    }
+    
+    public Container GetContainer()
+    {
+        return _container;
     }
 
 }

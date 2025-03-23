@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using Microsoft.Azure.Cosmos;
 using NPU.Data.Model;
 
 namespace NPU.Data.Base;
@@ -14,6 +15,11 @@ public interface IRepository<T> where T : BaseItem
     /// Query the repository of type T with a LINQ expression
     /// </summary>
     Task<IEnumerable<T>> QueryAsync(Expression<Func<T, bool>> predicate);
+
+    /// <summary>
+    /// Query the repository of type T with a query definition
+    /// </summary>
+    Task<IEnumerable<TX>> QueryAsync<TX>(QueryDefinition queryDefinition);
 
     /// <summary>
     /// Delete an item from the repository of type T
@@ -50,4 +56,6 @@ public interface IRepository<T> where T : BaseItem
         bool ascending = true,
         int offset = 0,
         int pageSize = 10);
+
+    Container GetContainer();
 }

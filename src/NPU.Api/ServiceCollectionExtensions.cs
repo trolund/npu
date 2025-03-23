@@ -12,11 +12,17 @@ public static class ServiceCollectionExtensions
         this IServiceCollection services)
     {
         services.AddScoped(typeof(IRepository<>), typeof(CosmosRepository<>));
+        
+        // Repositories
         services.AddScoped<NpuRepository>();
+        services.AddScoped<ScoreRepository>();
+        
+        // Services
         services.AddScoped<NpuService>();
+        
+        // Data Handlers
         services.AddScoped<IBlobStorageDriver, FileStorageDriver>();
         
-
         return services;
     }
 }

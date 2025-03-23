@@ -1,4 +1,3 @@
-using NanoidDotNet;
 using Newtonsoft.Json;
 
 namespace NPU.Data.Model;
@@ -8,13 +7,15 @@ public abstract class BaseItem
     protected BaseItem()
     {
         PartitionKey = GetType().Name.ToLower();
+        Id ??= Guid.NewGuid().ToString();
     }
 
     /// <summary>
     /// Identifier for the item
     /// </summary>
     [JsonProperty("id")]
-    public string Id { get; set; } = Guid.NewGuid().ToString();
+    // only set id if it's not set
+    public string Id { get; set; }
     
     /// <summary>
     /// Partition key for the item

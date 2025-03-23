@@ -42,7 +42,7 @@ public static class Program
         {
             options.SwaggerDoc(
                 "v1",
-                new OpenApiInfo() { Title = "NPU API", Version = "v1.0.0" }
+                new OpenApiInfo() { Title = "NPU Backend API", Version = "v1.0.0" }
             );
             options.AddSecurityDefinition(
                 "Bearer",
