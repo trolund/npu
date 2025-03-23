@@ -36,8 +36,21 @@ public class NpuService(
         var (items, totalCount) = await npuRepository
             .GetNpusPaginatedAsync(searchTerm, page, pageSize, ascending, sortOrderKey);
 
+        var mappedItems = await Task.WhenAll(items.Select(e => NpuResponse.FromModel(e))
+            .Select(async response =>
+            {
+                var score = await GetScoreSummeryAsync(response.Id);
+                if (score == null)
+                {
+                    return response;
+                }
+
+                response.Score = ScoreResponse.FromModel(score);
+                return response;
+            }));
+        
         return new PaginatedResponse<NpuResponse>(
-            Items: items.Select(e => NpuResponse.FromModel(e)),
+            Items: mappedItems,
             TotalCount: totalCount,
             PageNumber: page,
             PageSize: pageSize,
@@ -60,7 +73,7 @@ public class NpuService(
         await npuRepository.DeleteNoteAsync(id);
     }
 
-    public async Task<Score?> GiveScoreAsync(string npuId, CreateScoreRequest score)
+    public async Task<Score?> CreateScoreOfNpuAsync(string npuId, CreateScoreRequest score)
     {
         var npu = await npuRepository.GetNpuAsync(npuId);
         if (npu == null)
@@ -74,6 +87,11 @@ public class NpuService(
             Creativity = score.Creativity,
             Uniqueness = score.Uniqueness
         });
+    }
+    
+    private async Task<ScoreSummery?> GetScoreSummeryAsync(string id)
+    {
+        return await scoreRepository.GetAverageScoreForNpuIdAsync(id);
     }
 
     public async Task<NpuResponse?> GetNpuAsync(string id)

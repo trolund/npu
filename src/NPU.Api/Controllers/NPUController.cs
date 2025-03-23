@@ -74,7 +74,7 @@ namespace NPU.Controllers
         [HttpPost("{id}/score")]
         public async Task<IActionResult> ScoreNpu(string id, [FromBody] CreateScoreRequest score)
         {
-            var scoreResponse = await npuService.GiveScoreAsync(id, score);
+            var scoreResponse = await npuService.CreateScoreOfNpuAsync(id, score);
 
             if (scoreResponse == null)
             {

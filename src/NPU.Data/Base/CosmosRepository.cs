@@ -10,14 +10,12 @@ public class CosmosRepository<T>(ICosmosDbService cosmosDbService) : IRepository
 {
     private readonly Container _container = cosmosDbService.GetContainerAsync().GetAwaiter().GetResult();
     private readonly string _key = typeof(T).Name.ToLower();
-
-    // CREATE
+    
     public async Task<T> AddAsync(T entity)
     {
         return (await _container.CreateItemAsync(entity, new PartitionKey(_key))).Resource;
     }
-
-    // READ by ID
+    
     public async Task<T?> GetByIdAsync(string id)
     {
         try
@@ -30,23 +28,21 @@ public class CosmosRepository<T>(ICosmosDbService cosmosDbService) : IRepository
             return null;
         }
     }
-
-    // UPDATE
+    
     public async Task<T> UpdateAsync(string id, T entity)
     {
         return (await _container.ReplaceItemAsync(entity, id, new PartitionKey(_key))).Resource;
     }
-
-    // DELETE
+    
     public async Task<T> DeleteAsync(string id)
     {
         return (await _container.DeleteItemAsync<T>(id, new PartitionKey(_key))).Resource;
     }
-
-    // QUERY with LINQ
+    
     public async Task<IEnumerable<T>> QueryAsync(Expression<Func<T, bool>> predicate)
     {
         var query = _container.GetItemLinqQueryable<T>(allowSynchronousQueryExecution: false)
+            .Where(x => x.PartitionKey == _key)
             .Where(predicate)
             .ToFeedIterator();
 
@@ -62,8 +58,9 @@ public class CosmosRepository<T>(ICosmosDbService cosmosDbService) : IRepository
     public async Task<IEnumerable<T>> GetAllAsync()
     {
         var query = _container.GetItemLinqQueryable<T>(allowSynchronousQueryExecution: false)
+            .Where(x => x.PartitionKey == _key)
             .ToFeedIterator();
-
+        
         List<T> results = [];
         while (query.HasMoreResults)
         {

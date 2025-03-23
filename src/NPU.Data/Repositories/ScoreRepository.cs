@@ -5,14 +5,14 @@ using NPU.Infrastructure.Dtos;
 
 namespace NPU.Data.Repositories;
 
-public class ScoreRepository(IRepository<Score?> scoreRepository)
+public class ScoreRepository(IRepository<Score> scoreRepository)
 {
-    public async Task<Score?> UpdateScoreAsync(Score? score)
+    public async Task<Score?> UpdateScoreAsync(Score score)
     {
         return await scoreRepository.UpdateAsync(score.Id, score);
     }
 
-    public async Task<Score?> CreateScoreAsync(Score? score)
+    public async Task<Score?> CreateScoreAsync(Score score)
     {
         return await scoreRepository.AddAsync(score);
     }

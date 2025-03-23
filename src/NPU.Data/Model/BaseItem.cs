@@ -22,7 +22,7 @@ public abstract class BaseItem
     /// Each item in the Cosmos DB must have a unique partition key
     /// </summary>
     [JsonProperty("partitionKey")] 
-    private string PartitionKey { get; init; }   
+    public string PartitionKey { get; init; }   
     
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 }
