@@ -1,30 +1,31 @@
-@LockNote_Api_HostAddress = https://localhost:5001
+@NPU_Api_HostAddress = https://localhost:5001
 
-### Create a note
-POST {{LockNote_Api_HostAddress}}/api/notes
+### Create a new NPU
+POST {{NPU_Api_HostAddress}}/v1/api/npus?Name=TestNPU&Description=This%20is%20a%20test
+Content-Type: multipart/form-data
+
+--boundary
+Content-Disposition: form-data; name="Images"; filename="test-image.jpg"
+Content-Type: image/jpeg
+
+< ./test-image.jpg
+--boundary--
+
+### Work on NPU with id:
+@NPU_Id = 123456
+
+### Get a specific NPU by ID
+GET {{NPU_Api_HostAddress}}/v1/api/npus/{{NPU_Id}}
+
+### Get NPUs with pagination
+GET {{NPU_Api_HostAddress}}/v1/api/npus?page=1&pageSize=10&searchTerm=test&sortOrderKey=CreatedAt&ascending=true
+
+### Post a score for an NPU
+POST {{NPU_Api_HostAddress}}/v1/api/npus/{{NPU_Id}}/score
 Content-Type: application/json
 
 {
-  "content": "This is a test note",
-  "readBeforeDelete": 3,
-  "password": "mypassword"
-}
-
-### Work on note with id:
-@Note_Id = rh4Vok0GXR
-
-### Get a note
-POST {{LockNote_Api_HostAddress}}/api/notes/{{Note_Id}}
-Content-Type: application/json
-
-{
-  "password": "mypassword"
-}
-
-### Delete a note
-DELETE {{LockNote_Api_HostAddress}}/api/notes/{{Note_Id}}
-Content-Type: application/json
-
-{
-  "password": "mypassword"
+  "npuId": "{{NPU_Id}}",
+  "creativity": 5,
+  "uniqueness": 4
 }

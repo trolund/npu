@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Microsoft.Azure.Cosmos;
 using NPU.Data.Base;
 using NPU.Data.Model;
@@ -100,10 +101,13 @@ public class NpuRepository(IRepository<Npu> npuRepository)
     public async Task<(IEnumerable<Npu> Items, int)> GetNpusPaginatedAsync(string? searchTerm, int page, int pageSize,
         bool ascending, string? sortOrderKey)
     {
+        Expression<Func<Npu, bool>> filter = npu => 
+            string.IsNullOrEmpty(searchTerm) ||
+            npu.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) || 
+            (npu.Description != null && npu.Description.Contains(searchTerm, StringComparison.OrdinalIgnoreCase));
+        
         return await npuRepository.QueryWithPaginationAsync(
-            npu => string.IsNullOrEmpty(searchTerm) ||
-                   npu.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) || (npu.Description != null &&
-                       npu.Description.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)),
+            filter,
             sortOrderKey,
             ascending,
             offset: page - 1,

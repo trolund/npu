@@ -51,7 +51,7 @@ public interface IRepository<T> where T : BaseItem
     /// <param name="pageSize">The number of items to return</param>
     /// <returns>A tuple containing the items and the total number of items</returns>
     Task<(IEnumerable<T> Items, int)> QueryWithPaginationAsync(
-        Expression<Func<T, bool>> filterPredicate,
+        Expression<Func<T, bool>>? filterPredicate,
         string? sortOrderKey,
         bool ascending = true,
         int offset = 0,

@@ -84,7 +84,7 @@ public class CosmosRepository<T>(ICosmosDbService cosmosDbService) : IRepository
     /// <param name="pageSize"></param>
     /// <returns></returns>
     public async Task<(IEnumerable<T> Items, int)> QueryWithPaginationAsync(
-        Expression<Func<T, bool>> filterPredicate,
+        Expression<Func<T, bool>>? filterPredicate,
         string? sortOrderKey,
         bool ascending = true,
         int offset = 0,
@@ -97,16 +97,19 @@ public class CosmosRepository<T>(ICosmosDbService cosmosDbService) : IRepository
         {
             query = ApplySorting(query, sortOrderKey, ascending);
         }
-        
-        query = query.Where(filterPredicate);
-        
-        var count = (await query.CountAsync()).Resource;
+
+        if (filterPredicate != null)
+        {
+            query = query.Where(filterPredicate);
+        }
+
+        var count = await query.CountAsync();
         var items = query
             .Skip(offset * pageSize)
             .Take(pageSize)
             .ToList();
 
-        return (items, count);
+        return (items, count.Resource);
     }
     
     private static IQueryable<T> ApplySorting(IQueryable<T> query, string sortOrderKey, bool ascending)
