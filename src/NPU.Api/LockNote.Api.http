@@ -1,14 +1,15 @@
-@NPU_Api_HostAddress = https://localhost:5001
+# @NPU_Api_HostAddress = https://localhost:5001
+@NPU_Api_HostAddress = npuapp.azurewebsites.net
 
 ### Create a new NPU
 POST {{NPU_Api_HostAddress}}/v1/api/npus?Name=TestNPU&Description=This%20is%20a%20test
 Content-Type: multipart/form-data
 
 --boundary
-Content-Disposition: form-data; name="Images"; filename="test-image.jpg"
+Content-Disposition: form-data; name="Images"; filename="test-image.jpeg"
 Content-Type: image/jpeg
 
-< ./test-image.jpg
+< ./images/npu/test-image.jpeg
 --boundary--
 
 ### Work on NPU with id:

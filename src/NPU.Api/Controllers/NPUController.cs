@@ -6,7 +6,7 @@ using NPU.Infrastructure.Dtos;
 
 namespace NPU.Controllers
 {
-    [Route("v1/api/npus")]
+    [Route("api/npus")]
     [ApiController]
     public class NpuController(NpuService npuService) : ControllerBase
     {
