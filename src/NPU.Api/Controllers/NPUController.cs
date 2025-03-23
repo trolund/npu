@@ -10,8 +10,13 @@ namespace NPU.Controllers
     [ApiController]
     public class NpuController(NpuService npuService) : ControllerBase
     {
+        /// <summary>
+        /// Create a new npu
+        /// </summary>
+        /// <param name="request"> The request to create a new npu </param>
+        /// <returns> The created npu </returns>
         [HttpPost]
-        public async Task<IActionResult> CreateNpu(CreateNpuRequest request)
+        public async Task<ActionResult<Npu>> CreateNpu(CreateNpuRequest request)
         {
             var createdNpu = await npuService.CreateNpuWithImagesAsync(request.Name, request.Description ?? "",
                 request.Images.Select(i => (i.FileName, i.OpenReadStream())));
@@ -22,6 +27,11 @@ namespace NPU.Controllers
                 createdNpu);
         }
 
+        /// <summary>
+        /// Get a npu by id
+        /// </summary>
+        /// <param name="id"> The id of the npu </param>
+        /// <returns> The requested npu </returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<IEnumerable<NpuResponse>>> GetNpu(string id)
         {
@@ -34,6 +44,15 @@ namespace NPU.Controllers
             return Ok(item);
         }
 
+        /// <summary>
+        /// Get npus in a paginated response
+        /// </summary>
+        /// <param name="searchTerm"> The search term to filter npus by. Default is null </param>
+        /// <param name="sortOrderKey"> The key to sort by, default is CreatedAt. Can be any property of Npu </param>
+        /// <param name="ascending"> Whether to sort in ascending order, default is true </param>
+        /// <param name="page"> The page number to get, page starts at 1 </param>
+        /// <param name="pageSize"> The number of items per page, default is 10 and max is 50 </param>
+        /// <returns> A list of npus in a paginated response </returns>
         [HttpGet]
         public async Task<ActionResult<PaginatedResponse<NpuResponse>>> GetNpus(
             string? searchTerm,
@@ -46,7 +65,12 @@ namespace NPU.Controllers
             return Ok(await npuService.GetNpuPaginatedAsync(searchTerm, page, pageSize, ascending, sortOrderKey));
         }
 
-        // give score to npu
+        /// <summary>
+        /// Post a score for a npu
+        /// </summary>
+        /// <param name="id"> The id of the npu </param>
+        /// <param name="score"> The score to post </param>
+        /// <returns> The posted score </returns>
         [HttpPost("{id}/score")]
         public async Task<IActionResult> ScoreNpu(string id, [FromBody] CreateScoreRequest score)
         {
