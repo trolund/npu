@@ -90,11 +90,12 @@ public static class Program
 
         var app = builder.Build();
 
-        if (app.Environment.IsDevelopment())
-        {
+        // TODO: back if block
+        // if (app.Environment.IsDevelopment())
+        // {
             app.UseSwagger();
             app.UseSwaggerUI();
-        }
+        // }
 
         app.UseCors(policyBuilder =>
         {
