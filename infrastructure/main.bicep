@@ -56,6 +56,9 @@ resource blobService 'Microsoft.Storage/storageAccounts/blobServices@2022-09-01'
 resource blobContainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2022-09-01' = {
   parent: blobService
   name: storageContainerName
+  properties: {
+    publicAccess: 'Blob'
+  }
 }
 
 resource appService 'Microsoft.Web/sites@2022-03-01' = {
