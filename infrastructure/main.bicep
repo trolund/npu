@@ -46,15 +46,6 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
   sku: {
     name: 'Standard_LRS'
   }
-  properties: {
-    allowBlobPublicAccess: true
-    networkAcls: {
-      bypass: 'AzureServices'
-      defaultAction: 'Allow'
-      virtualNetworkRules: []
-      ipRules: []
-    }
-  }
 }
 
 resource blobService 'Microsoft.Storage/storageAccounts/blobServices@2022-09-01' = {
@@ -65,9 +56,6 @@ resource blobService 'Microsoft.Storage/storageAccounts/blobServices@2022-09-01'
 resource blobContainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2022-09-01' = {
   parent: blobService
   name: storageContainerName
-  properties: {
-    publicAccess: 'Blob'
-  }
 }
 
 resource appService 'Microsoft.Web/sites@2022-03-01' = {
