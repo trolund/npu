@@ -26,6 +26,9 @@ public static class Program
         {
             throw new ArgumentException("Cosmos and Storage settings are required");
         }
+        
+        builder.Services.AddSingleton(storageSettings);
+        builder.Services.AddSingleton(cosmosSettings);
 
         // using azure ad
         // builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -84,14 +87,6 @@ public static class Program
             var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
             options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
         });
-
-        builder.Services.AddSingleton(storageSettings);
-        builder.Services.AddSingleton(cosmosSettings);
-
-        builder.Services.AddScoped<IBlobStorageDriver, FileStorageDriver>();
-
-        builder.Services.AddScoped<FileUploadService>();
-        builder.Services.AddSingleton<ICosmosDbService, CosmosDbService>();
 
         var app = builder.Build();
 

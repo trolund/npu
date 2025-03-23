@@ -18,10 +18,12 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ScoreRepository>();
         
         // Services
+        services.AddSingleton<ICosmosDbService, CosmosDbService>();
         services.AddScoped<NpuService>();
+        services.AddScoped<FileUploadService>();
         
         // Data Handlers
-        services.AddScoped<IBlobStorageDriver, FileStorageDriver>();
+        services.AddScoped<IBlobStorageDriver, BlobStorageDriver>();
         
         return services;
     }

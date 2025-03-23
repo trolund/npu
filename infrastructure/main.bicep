@@ -80,6 +80,10 @@ resource appService 'Microsoft.Web/sites@2022-03-01' = {
           name: 'STORAGE__CON_NAME'
           value: storageContainerName
         }
+        {
+          name: 'STORAGE__CON_URL'
+          value: 'https://${storageAccount.name}.blob.core.windows.net/${storageContainerName}/'
+        }
       ]
     }
   }
@@ -118,11 +122,11 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
         }
         {
           name: 'FUNCTIONS_WORKER_RUNTIME'
-          value: 'dotnet-isolated' 
+          value: 'dotnet-isolated'
         }
         {
           name: 'DOTNET_ISOLATED_VERSION'
-          value: '8.0' 
+          value: '8.0'
         }
         {
           name: 'COSMOS__DB_CONNECTION_STRING'

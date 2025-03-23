@@ -1,15 +1,16 @@
 using NPU.Data.DataHandlers;
+using NPU.Infrastructure.Config;
 
 namespace NPU.Bl;
 
-public class FileUploadService(IBlobStorageDriver storageDriver)
+public class FileUploadService(IBlobStorageDriver storageDriver, StorageSettings storageSettings)
 {
-    private static readonly string Path = $"{Directory.GetCurrentDirectory()}/images/npu";
+    private static readonly string ImagePath = "images/npu";
 
     public async Task<string> UploadFileAsync(string fileName, Stream fileStream)
     {
-        var filePath = $"{Path}/{DateTime.Now:yyyyMMddHHmmss}_{fileName}";
-        await storageDriver.WriteFileAsync(Path, fileName, fileStream);
-        return filePath;
+        var filePath = $"{ImagePath}/{DateTime.Now:yyyyMMddHHmmss}_{fileName}";
+        await storageDriver.WriteFileAsync(ImagePath, filePath, fileStream);
+        return Path.Combine(storageSettings.CON_URL, filePath);
     }
 }

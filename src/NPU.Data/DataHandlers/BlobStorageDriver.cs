@@ -24,7 +24,7 @@ public class BlobStorageDriver(StorageSettings config): IBlobStorageDriver
     {
         var blobServiceClient = new BlobServiceClient(_connectionString);
         var containerClient = blobServiceClient.GetBlobContainerClient(config.CON_NAME);
-        var blobClient = containerClient.GetBlobClient(Path.Combine(path, fileName));
+        var blobClient = containerClient.GetBlobClient(fileName);
         
         await blobClient.UploadAsync(data);
     }
