@@ -1,5 +1,5 @@
 # @NPU_Api_HostAddress = https://localhost:5001
-@NPU_Api_HostAddress = npuapp.azurewebsites.net
+@NPU_Api_HostAddress = https://npuapp.azurewebsites.net
 
 ### Create a new NPU
 POST {{NPU_Api_HostAddress}}/v1/api/npus?Name=TestNPU&Description=This%20is%20a%20test
