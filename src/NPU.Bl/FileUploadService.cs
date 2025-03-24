@@ -1,3 +1,4 @@
+using System.Net;
 using NPU.Data.Config;
 using NPU.Data.DataHandlers;
 
@@ -12,5 +13,10 @@ public class FileUploadService(IBlobStorageDriver storageDriver, StorageSettings
         var filePath = $"{ImagePath}/{DateTime.Now:yyyyMMddHHmmss}_{fileName}";
         await storageDriver.WriteFileAsync(ImagePath, filePath, fileStream);
         return Path.Combine(storageSettings.CON_URL, filePath);
+    }
+
+    public async Task<Stream> GetFileAsync(string path)
+    {
+        return await storageDriver.ReadFileAsync(path);
     }
 }

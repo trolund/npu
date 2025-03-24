@@ -2,11 +2,11 @@ namespace NPU.Data.DataHandlers;
 
 public class FileStorageDriver: IBlobStorageDriver
 {
-    public Task<string> ReadFileAsync(string filePath)
+    public Task<Stream> ReadFileAsync(string filePath)
     {
         try
         {
-            return File.ReadAllTextAsync(filePath);
+            return Task.FromResult<Stream>(File.Open(filePath, FileMode.Open, FileAccess.Read));
         }
         catch (FileNotFoundException e)
         {

@@ -30,6 +30,14 @@ public class NpuService(
         });
     }
 
+    // Insecure read
+    public async Task<(Stream, string)> GetImageOfNpu(string id, string path)
+    {
+        var stream = await fileUploadService.GetFileAsync(path);
+        var fileType = Path.GetExtension(path).Replace(".", "");
+        return (stream, fileType);
+    }
+
     public async Task<PaginatedResponse<NpuResponse>> GetNpuPaginatedAsync(string? searchTerm, int page, int pageSize,
         bool ascending, string? sortOrderKey)
     {

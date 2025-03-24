@@ -4,7 +4,7 @@ using NPU.Data.Config;
 
 namespace NPU;
 
-public static class Program
+public partial class Program
 {
     public static void Main(string[] args)
     {
