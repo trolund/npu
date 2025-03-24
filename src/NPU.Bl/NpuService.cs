@@ -11,7 +11,7 @@ public class NpuService(
     FileUploadService fileUploadService,
     ILogger<NpuService> logger)
 {
-    public async Task<Npu> CreateNpuWithImagesAsync(string name, string description,
+    public async Task<NpuResponse> CreateNpuWithImagesAsync(string name, string description,
         IEnumerable<(string, Stream)> images)
     {
         var id = Guid.NewGuid().ToString();
@@ -23,13 +23,15 @@ public class NpuService(
             links.Add(link);
         }
 
-        return await npuRepository.CreateNpuAsync(new Npu()
+        var created = await npuRepository.CreateNpuAsync(new Npu()
         {
             Id = id,
             Name = name,
             Description = description,
             Images = links.ToArray()
         });
+
+        return NpuResponse.FromModel(created);
     }
 
     // Insecure read
@@ -55,7 +57,7 @@ public class NpuService(
                     return response;
                 }
 
-                response.Score = ScoreResponse.FromModel(score);
+                response.Score = ScoreSummeryResponse.FromModel(score);
                 return response;
             }));
         
@@ -83,7 +85,7 @@ public class NpuService(
         await npuRepository.DeleteNoteAsync(id);
     }
 
-    public async Task<Score?> CreateScoreOfNpuAsync(string npuId, CreateScoreRequest score)
+    public async Task<ScoreResponse?> CreateScoreOfNpuAsync(string npuId, CreateScoreRequest score)
     {
         var npu = await npuRepository.GetNpuAsync(npuId);
         if (npu == null)
@@ -91,12 +93,14 @@ public class NpuService(
             return null;
         }
 
-        return await scoreRepository.CreateScoreAsync(new Score
+        var created = await scoreRepository.CreateScoreAsync(new Score
         {
             NpuId = npuId,
             Creativity = score.Creativity,
             Uniqueness = score.Uniqueness
         });
+        
+        return created is null ? null : ScoreResponse.FromModel(created);
     }
     
     private async Task<ScoreSummery?> GetScoreSummeryAsync(string id)
@@ -108,6 +112,6 @@ public class NpuService(
     {
         var score = await scoreRepository.GetAverageScoreForNpuIdAsync(id);
         var npu = await npuRepository.GetNpuAsync(id);
-        return npu == null ? null : NpuResponse.FromModel(npu, score is null ? null : ScoreResponse.FromModel(score));
+        return npu is null ? null : NpuResponse.FromModel(npu, score is null ? null : ScoreSummeryResponse.FromModel(score));
     }
 }

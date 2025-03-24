@@ -11,9 +11,9 @@ public class NpuResponse
     
     public required string[] Images { get; init; } = [];
     
-    public ScoreResponse? Score { get; set; }
+    public ScoreSummeryResponse? Score { get; set; }
     
-    public static NpuResponse FromModel(Npu npu, ScoreResponse? score = null) => new()
+    public static NpuResponse FromModel(Npu npu, ScoreSummeryResponse? score = null) => new()
     {
         Id = npu.Id,
         Name = npu.Name,

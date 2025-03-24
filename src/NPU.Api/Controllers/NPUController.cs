@@ -18,7 +18,7 @@ namespace NPU.Controllers
         /// <param name="request"> The request to create a new npu </param>
         /// <returns> The created npu </returns>
         [HttpPost]
-        public async Task<ActionResult<Npu>> CreateNpu(CreateNpuRequest request)
+        public async Task<ActionResult<NpuResponse>> CreateNpu(CreateNpuRequest request)
         {
             var createdNpu = await npuService.CreateNpuWithImagesAsync(request.Name, request.Description ?? "",
                 request.Images.Select(i => (i.FileName, i.OpenReadStream())));
@@ -74,7 +74,7 @@ namespace NPU.Controllers
         /// <param name="score"> The score to post </param>
         /// <returns> The posted score </returns>
         [HttpPost("{id}/score")]
-        public async Task<ActionResult<Score?>> ScoreNpu(string id, [FromBody] CreateScoreRequest score)
+        public async Task<ActionResult<ScoreResponse>> ScoreNpu(string id, [FromBody] CreateScoreRequest score)
         {
             var scoreResponse = await npuService.CreateScoreOfNpuAsync(id, score);
 

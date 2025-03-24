@@ -47,5 +47,4 @@ public partial class FileUploadService(IBlobStorageDriver storageDriver, Storage
         return await storageDriver.ReadFileAsync($"{ImagePath}/{id}/{sanitizedFileName}");
     }
 
-
 }

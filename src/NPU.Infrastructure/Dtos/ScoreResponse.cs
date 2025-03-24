@@ -4,12 +4,12 @@ namespace NPU.Infrastructure.Dtos;
 
 public class ScoreResponse
 {
-    public double AvgCreativity { get; set; }
-    public double AvgUniqueness { get; set; }
+    public required int Creativity { get; set; }
+    public required int Uniqueness { get; set; }
     
-    public static ScoreResponse FromModel(ScoreSummery score) => new()
+    public static ScoreResponse FromModel(Score score) => new()
     {
-        AvgUniqueness = score.AvgUniqueness,
-        AvgCreativity = score.AvgCreativity
+        Creativity = score.Creativity,
+        Uniqueness = score.Uniqueness
     };
 }
