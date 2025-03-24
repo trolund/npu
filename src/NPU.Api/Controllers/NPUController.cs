@@ -10,6 +10,8 @@ namespace NPU.Controllers
     [ApiController]
     public class NpuController(NpuService npuService) : ControllerBase
     {
+        
+        
         /// <summary>
         /// Create a new npu
         /// </summary>
@@ -96,6 +98,12 @@ namespace NPU.Controllers
         {
             var (stream, fileType) = await npuService.GetImageOfNpu(id, path);
             return File(stream, $"image/{fileType}");
+        }
+        
+        [HttpGet("test")]
+        public async Task<ActionResult<string>> GetTest()
+        {
+            return Ok("Test Works!!");
         }
         
     }

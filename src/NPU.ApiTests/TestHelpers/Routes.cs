@@ -8,6 +8,8 @@ public static class Routes
     {
         private const string BaseNpusRoute = Routes.BaseRoute + "/npus";
 
+        
+        public const string Test = BaseNpusRoute + "/test";  // GET /npus
         public const string Create = BaseNpusRoute;  // POST /npus
         public const string GetById = BaseNpusRoute + "/{id}";  // GET /npus/{id}
         public const string GetAll = BaseNpusRoute;  // GET /npus
