@@ -1,5 +1,3 @@
-using System.Net;
-using System.Runtime.Serialization;
 using Microsoft.Extensions.Logging;
 using NPU.Data.Model;
 using NPU.Data.Repositories;
