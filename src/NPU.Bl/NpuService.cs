@@ -14,16 +14,18 @@ public class NpuService(
     public async Task<Npu> CreateNpuWithImagesAsync(string name, string description,
         IEnumerable<(string, Stream)> images)
     {
+        var id = Guid.NewGuid().ToString();
         // optimistic file upload
         var links = new List<string>();
         foreach (var (fileName, stream) in images)
         {
-            var link = await fileUploadService.UploadFileAsync(fileName, stream);
+            var link = await fileUploadService.UploadFileAsync(id, fileName, stream);
             links.Add(link);
         }
 
         return await npuRepository.CreateNpuAsync(new Npu()
         {
+            Id = id,
             Name = name,
             Description = description,
             Images = links.ToArray()
@@ -33,7 +35,7 @@ public class NpuService(
     // Insecure read
     public async Task<(Stream, string)> GetImageOfNpu(string id, string path)
     {
-        var stream = await fileUploadService.GetFileAsync(path);
+        var stream = await fileUploadService.GetFileAsync(id, path);
         var fileType = Path.GetExtension(path).Replace(".", "");
         return (stream, fileType);
     }

@@ -8,15 +8,15 @@ public class FileUploadService(IBlobStorageDriver storageDriver, StorageSettings
 {
     private static readonly string ImagePath = "images/npu";
 
-    public async Task<string> UploadFileAsync(string fileName, Stream fileStream)
+    public async Task<string> UploadFileAsync(string id, string fileName, Stream fileStream)
     {
-        var filePath = $"{ImagePath}/{DateTime.Now:yyyyMMddHHmmss}_{fileName}";
+        var filePath = $"{id}/{DateTime.Now:yyyyMMddHHmmss}_{fileName}";
         await storageDriver.WriteFileAsync(ImagePath, filePath, fileStream);
-        return Path.Combine(storageSettings.CON_URL, filePath);
+        return filePath;
     }
 
-    public async Task<Stream> GetFileAsync(string path)
+    public async Task<Stream> GetFileAsync(string id, string path)
     {
-        return await storageDriver.ReadFileAsync(path);
+        return await storageDriver.ReadFileAsync($"{ImagePath}/{id}/{path}");
     }
 }

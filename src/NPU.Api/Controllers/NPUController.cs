@@ -99,12 +99,5 @@ namespace NPU.Controllers
             var (stream, fileType) = await npuService.GetImageOfNpu(id, path);
             return File(stream, $"image/{fileType}");
         }
-        
-        [HttpGet("test")]
-        public async Task<ActionResult<string>> GetTest()
-        {
-            return Ok("Test Works!!");
-        }
-        
     }
 }

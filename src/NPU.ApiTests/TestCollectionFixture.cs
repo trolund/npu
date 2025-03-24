@@ -7,8 +7,6 @@ public class TestCollectionFixture(ICosmosDbService cosmosDbService): IAsyncLife
     public async Task InitializeAsync()
     {
         Console.WriteLine("🏁 Running test collection setup.");
-        // await cosmosDbService.EnsureDbSetupAsync();
-        // await DatabaseSeeding.SeedDatabase(cosmosDbService);
     }
 
     public async Task DisposeAsync()
