@@ -4,18 +4,16 @@ using NPU.Data.Model;
 
 namespace NPU.ApiTests;
 
-public class GetNpuByIdTests(WebApplicationFactory<Microsoft.VisualStudio.TestPlatform.TestHost.Program> factory) : TestBase(factory)
+public class GetNpuByIdTests(WebApiApplication factory) : TestBase(factory)
 {
     [Fact]
     public async Task GetNpuById()
     {
         // Act
-        var result = await GetAndDeserialize<Npu>(Routes.Npus.Get(""));
+        var result = await GetAndDeserialize<string>(Routes.Npus.Test);
 
         // Assert
         Assert.NotNull(result);
-
-        var expectedAuthorName = "";
-        Assert.Equal(expectedAuthorName, result.Name);
+        Assert.Equal("Test Works!!", result);
     }
 }
