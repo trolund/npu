@@ -3,11 +3,12 @@
 public static class Routes
 {
     private const string BaseRoute = "/api";  // Assuming "/api" is your base route
-
+    
+    public const string Health = "/healthz";
+    
     public static class Npus
     {
         private const string BaseNpusRoute = Routes.BaseRoute + "/npus";
-
         
         public const string Test = BaseNpusRoute + "/test";  // GET /npus
         public const string Create = BaseNpusRoute;  // POST /npus

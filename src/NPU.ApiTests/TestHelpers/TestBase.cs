@@ -6,10 +6,12 @@ namespace NPU.ApiTests.TestHelpers;
 public abstract class TestBase : IClassFixture<WebApiApplication>
 {
     protected readonly HttpClient ApiClient;
+
     protected TestBase(WebApiApplication factory)
     {
         ApiClient = factory.CreateClient();
     }
+
     protected async Task<T?> GetAndDeserialize<T>(string route)
     {
         var response = await ApiClient.GetAsync(route);
@@ -20,7 +22,10 @@ public abstract class TestBase : IClassFixture<WebApiApplication>
         {
             return (T)(object)stringResult;
         }
-        
-        return JsonSerializer.Deserialize<T>(stringResult);
+
+        return JsonSerializer.Deserialize<T>(stringResult, options: new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        });
     }
 }

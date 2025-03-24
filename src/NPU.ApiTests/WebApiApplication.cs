@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using NPU.Data.Base;
 using NPU.Data.Config;
 
 namespace NPU.ApiTests;
@@ -20,8 +21,22 @@ public class WebApiApplication : WebApplicationFactory<Program>
                 DB_NAME = "NPUTestDB",
                 CON_NAME = "data"
             });
+            
+            // Build the service provider
+            var sp = services.BuildServiceProvider();
+
+            // Create a scope to resolve dependencies
+            using var scope = sp.CreateScope();
+            var scopedServices = scope.ServiceProvider;
+        
+            var cosmosDbService = scopedServices.GetRequiredService<ICosmosDbService>();
+
+            // Ensure database is created
+            cosmosDbService.EnsureDbSetupAsync().GetAwaiter();
+
+            // Seed the database
+            DatabaseSeeding.SeedDatabase(cosmosDbService).GetAwaiter();
         });
+        
     }
-    
-    
 }

@@ -35,7 +35,7 @@ namespace NPU.Controllers
         /// <param name="id"> The id of the npu </param>
         /// <returns> The requested npu </returns>
         [HttpGet("{id}")]
-        public async Task<ActionResult<IEnumerable<NpuResponse>>> GetNpu(string id)
+        public async Task<ActionResult<NpuResponse>> GetNpu(string id)
         {
             var item = await npuService.GetNpuAsync(id);
             if (item == null)

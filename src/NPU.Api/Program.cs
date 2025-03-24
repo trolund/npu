@@ -15,6 +15,8 @@ public partial class Program
             // force scope validation in development
             options.ValidateScopes = context.HostingEnvironment.IsDevelopment();
         });
+        
+        builder.Services.AddHealthChecks();
 
         var cosmosSettings = builder.Configuration.GetSection("COSMOS").Get<CosmosSettings>();
         var storageSettings = builder.Configuration.GetSection("STORAGE").Get<StorageSettings>();
@@ -86,13 +88,14 @@ public partial class Program
         });
 
         var app = builder.Build();
-
-        // TODO: back if block
-        // if (app.Environment.IsDevelopment())
-        // {
+        
+        app.MapHealthChecks("/healthz");
+        
+        if (app.Environment.IsDevelopment())
+        {
             app.UseSwagger();
             app.UseSwaggerUI();
-        // }
+        }
 
         app.UseCors(policyBuilder =>
         {
