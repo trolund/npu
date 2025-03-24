@@ -33,10 +33,10 @@ public class NpuService(
     }
 
     // Insecure read
-    public async Task<(Stream, string)> GetImageOfNpu(string id, string path)
+    public async Task<(Stream, string)> GetImageOfNpu(string id, string filename)
     {
-        var stream = await fileUploadService.GetFileAsync(id, path);
-        var fileType = Path.GetExtension(path).Replace(".", "");
+        var stream = await fileUploadService.GetFileAsync(id, filename);
+        var fileType = Path.GetExtension(filename).Replace(".", "");
         return (stream, fileType);
     }
 

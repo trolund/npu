@@ -91,12 +91,12 @@ namespace NPU.Controllers
         /// Get image of an NPU
         /// </summary>
         /// <param name="id"> The id of the npu </param>
-        /// <param name="path"> The path to image </param>
+        /// <param name="filename"> The filename of the image </param>
         /// <returns> The image </returns>
         [HttpGet("{id}/image")]
-        public async Task<IActionResult> ScoreNpu(string id, string path)
+        public async Task<IActionResult> GetImage(string id, string filename)
         {
-            var (stream, fileType) = await npuService.GetImageOfNpu(id, path);
+            var (stream, fileType) = await npuService.GetImageOfNpu(id, filename);
             return File(stream, $"image/{fileType}");
         }
     }
