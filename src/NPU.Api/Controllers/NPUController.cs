@@ -83,5 +83,20 @@ namespace NPU.Controllers
 
             return Ok(scoreResponse);
         }
+        
+        
+        /// <summary>
+        /// Get image of an NPU
+        /// </summary>
+        /// <param name="id"> The id of the npu </param>
+        /// <param name="path"> The path to image </param>
+        /// <returns> The image </returns>
+        [HttpGet("{id}/image")]
+        public async Task<IActionResult> ScoreNpu(string id, string path)
+        {
+            var (stream, fileType) = await npuService.GetImageOfNpu(id, path);
+            return File(stream, $"image/{fileType}");
+        }
+        
     }
 }
