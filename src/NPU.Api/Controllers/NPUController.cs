@@ -10,8 +10,6 @@ namespace NPU.Controllers
     [ApiController]
     public class NpuController(NpuService npuService) : ControllerBase
     {
-        
-        
         /// <summary>
         /// Create a new npu
         /// </summary>
@@ -85,7 +83,6 @@ namespace NPU.Controllers
 
             return Ok(scoreResponse);
         }
-        
         
         /// <summary>
         /// Get image of an NPU

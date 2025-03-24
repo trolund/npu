@@ -35,9 +35,9 @@ public partial class FileUploadService(IBlobStorageDriver storageDriver, Storage
     public async Task<string> UploadFileAsync(string id, string fileName, Stream fileStream)
     {
         var sanitizedFileName = Sanitize(id, fileName);
-        
-        var filePath = $"{id}/{DateTime.Now:yyyyMMddHHmmss}_{sanitizedFileName}";
-        await storageDriver.WriteFileAsync(ImagePath, filePath, fileStream);
+
+        var filePath = $"{DateTime.Now:yyyyMMddHHmmss}_{sanitizedFileName}";
+        await storageDriver.WriteFileAsync(ImagePath, Path.Combine(id, filePath), fileStream);
         return filePath;
     }
 
@@ -46,5 +46,4 @@ public partial class FileUploadService(IBlobStorageDriver storageDriver, Storage
         var sanitizedFileName = Sanitize(id, filename);
         return await storageDriver.ReadFileAsync($"{ImagePath}/{id}/{sanitizedFileName}");
     }
-
 }

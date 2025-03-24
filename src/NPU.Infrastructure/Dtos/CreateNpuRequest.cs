@@ -16,6 +16,7 @@ public record CreateNpuRequest
     
     [Required]
     [MaxFileSize(2)]
-    [FileExtension(".gif, .jpg, .jpeg, .png")]
+    [FileExtension(".gif, .jpg, .jpeg, .png, .heic")]
+    [MaxLength(3)]
     public required IFormFile[] Images { get; init; }
 }

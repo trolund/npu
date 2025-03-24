@@ -16,7 +16,6 @@ public class BlobStorageDriver(StorageSettings config): IBlobStorageDriver
 
         BlobDownloadInfo download = await blobClient.DownloadAsync();
         
-        //using var reader = new StreamReader(download.Content);
         return download.Content;
     }
     
