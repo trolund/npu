@@ -72,7 +72,7 @@ namespace NPU.Controllers
         /// <param name="score"> The score to post </param>
         /// <returns> The posted score </returns>
         [HttpPost("{id}/score")]
-        public async Task<IActionResult> ScoreNpu(string id, [FromBody] CreateScoreRequest score)
+        public async Task<ActionResult<Score?>> ScoreNpu(string id, [FromBody] CreateScoreRequest score)
         {
             var scoreResponse = await npuService.CreateScoreOfNpuAsync(id, score);
 

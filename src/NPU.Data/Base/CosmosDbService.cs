@@ -1,5 +1,5 @@
 using Microsoft.Azure.Cosmos;
-using NPU.Infrastructure.Config;
+using NPU.Data.Config;
 
 namespace NPU.Data.Base;
 

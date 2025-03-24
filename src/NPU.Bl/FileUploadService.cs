@@ -1,5 +1,5 @@
+using NPU.Data.Config;
 using NPU.Data.DataHandlers;
-using NPU.Infrastructure.Config;
 
 namespace NPU.Bl;
 

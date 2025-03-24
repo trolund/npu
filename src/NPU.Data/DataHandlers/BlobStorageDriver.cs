@@ -1,6 +1,6 @@
 ﻿using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
-using NPU.Infrastructure.Config;
+using NPU.Data.Config;
 
 namespace NPU.Data.DataHandlers;
 

@@ -1,4 +1,4 @@
-namespace NPU.Infrastructure.Config;
+namespace NPU.Data.Config;
 
 public class CosmosSettings
 {

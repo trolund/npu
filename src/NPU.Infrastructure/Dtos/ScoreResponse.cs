@@ -1,3 +1,5 @@
+using NPU.Data.Model;
+
 namespace NPU.Infrastructure.Dtos;
 
 public class ScoreResponse

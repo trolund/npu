@@ -1,9 +1,6 @@
 using System.Reflection;
 using Microsoft.OpenApi.Models;
-using NPU.Bl;
-using NPU.Data.Base;
-using NPU.Data.DataHandlers;
-using NPU.Infrastructure.Config;
+using NPU.Data.Config;
 
 namespace NPU;
 
