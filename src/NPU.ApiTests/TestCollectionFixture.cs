@@ -4,9 +4,10 @@ namespace NPU.ApiTests;
 
 public class TestCollectionFixture(ICosmosDbService cosmosDbService): IAsyncLifetime
 {
-    public async Task InitializeAsync()
+    public Task InitializeAsync()
     {
         Console.WriteLine("🏁 Running test collection setup.");
+        return Task.CompletedTask;
     }
 
     public async Task DisposeAsync()

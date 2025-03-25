@@ -2,7 +2,7 @@
 using NPU.Data.Model;
 using NPU.Infrastructure.Dtos;
 
-namespace NPU.ApiTests;
+namespace NPU.ApiTests.Tests;
 
 public class GetNpusTests(WebApiApplication factory) : TestBase(factory)
 {

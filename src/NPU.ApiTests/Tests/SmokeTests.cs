@@ -1,6 +1,6 @@
 using NPU.ApiTests.TestHelpers;
 
-namespace NPU.ApiTests;
+namespace NPU.ApiTests.Tests;
 
 public class SmokeTests(WebApiApplication factory) : TestBase(factory)
 {

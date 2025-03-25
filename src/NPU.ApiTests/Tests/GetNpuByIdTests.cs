@@ -2,7 +2,7 @@ using System.Net;
 using NPU.ApiTests.TestHelpers;
 using NPU.Infrastructure.Dtos;
 
-namespace NPU.ApiTests;
+namespace NPU.ApiTests.Tests;
 
 public class GetNpuByIdTests(WebApiApplication factory) : TestBase(factory)
 {

@@ -1,7 +1,7 @@
 using NPU.Data.Base;
 using NPU.Data.Model;
 
-namespace NPU.ApiTests;
+namespace NPU.ApiTests.TestHelpers;
 
 public static class DatabaseSeeding
 {
