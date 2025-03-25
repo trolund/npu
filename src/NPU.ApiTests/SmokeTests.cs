@@ -5,10 +5,10 @@ namespace NPU.ApiTests;
 public class SmokeTests(WebApiApplication factory) : TestBase(factory)
 {
     [Fact]
-    public async Task SmokeTest()
+    public async Task WHEN_ServiceIsRunning_THEN_ItIsHealthy()
     {
         // Act
-        var result = await GetAndDeserialize<string>(Routes.Health);
+        var (_, result) = await GetAndDeserialize<string>(Routes.Health);
 
         // Assert
         Assert.NotNull(result);

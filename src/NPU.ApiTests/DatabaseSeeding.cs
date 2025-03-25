@@ -6,12 +6,33 @@ namespace NPU.ApiTests;
 public static class DatabaseSeeding
 {
     public static readonly List<Npu> Npus = [
-        new()
+        new Npu
         {
             Id = Guid.NewGuid().ToString(),
-            Name = "name",
-            Description = "description",
+            Name = "a",
+            Description = "a",
             Images = ["image1.gif", "image2.jpg"]
+        },
+        new Npu
+        {
+            Id = Guid.NewGuid().ToString(),
+            Name = "b",
+            Description = "a",
+            Images = ["image1.gif", "image2.jpg", "image2.jpg"]
+        },
+        new Npu
+        {
+            Id = Guid.NewGuid().ToString(),
+            Name = "c",
+            Description = "a",
+            Images = ["image1.gif", "image2.jpg", "image3.jpg", "image4.jpg"]
+        },
+        new Npu
+        {
+            Id = Guid.NewGuid().ToString(),
+            Name = "d",
+            Description = "a",
+            Images = ["image1.gif", "image2.pdf"]
         }
     ];
 

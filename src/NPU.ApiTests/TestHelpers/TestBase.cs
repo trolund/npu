@@ -1,18 +1,30 @@
-﻿using System.Text.Json;
-using Microsoft.AspNetCore.Mvc.Testing;
+﻿using System.Text;
+using System.Text.Json;
+using Newtonsoft.Json;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace NPU.ApiTests.TestHelpers;
 
-public abstract class TestBase : IClassFixture<WebApiApplication>
+public abstract class TestBase(WebApiApplication factory) : IClassFixture<WebApiApplication>
 {
-    protected readonly HttpClient ApiClient;
+    protected readonly HttpClient ApiClient = factory.CreateClient();
 
-    protected TestBase(WebApiApplication factory)
+    protected async Task<(HttpResponseMessage, TX?)> PostAndSerialize<T, TX>(string url, T request)
     {
-        ApiClient = factory.CreateClient();
+        var jsonContent = JsonConvert.SerializeObject(request);
+        var httpContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+        // Act
+        var response = await ApiClient.PostAsync(url, httpContent);
+        var stringResult = await response.Content.ReadAsStringAsync();
+        
+        return (response, JsonSerializer.Deserialize<TX>(stringResult, options: new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        }));
     }
 
-    protected async Task<T?> GetAndDeserialize<T>(string route)
+    protected async Task<(HttpResponseMessage, T?)> GetAndDeserialize<T>(string route)
     {
         var response = await ApiClient.GetAsync(route);
         response.EnsureSuccessStatusCode();
@@ -20,12 +32,12 @@ public abstract class TestBase : IClassFixture<WebApiApplication>
 
         if (typeof(T) == typeof(string))
         {
-            return (T)(object)stringResult;
+            return (response, (T)(object)stringResult);
         }
 
-        return JsonSerializer.Deserialize<T>(stringResult, options: new JsonSerializerOptions
+        return (response, JsonSerializer.Deserialize<T>(stringResult, options: new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true
-        });
+        }));
     }
 }
