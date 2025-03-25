@@ -95,7 +95,6 @@ public class NpuRepository(IRepository<Npu> npuRepository)
         if (!iterator.HasMoreResults) return 0; // No results found
         var response = await iterator.ReadNextAsync();
         return response.FirstOrDefault(); // COUNT returns a single integer value
-
     }
 
     public async Task<(IEnumerable<Npu> Items, int)> GetNpusPaginatedAsync(string? searchTerm, int page, int pageSize,
