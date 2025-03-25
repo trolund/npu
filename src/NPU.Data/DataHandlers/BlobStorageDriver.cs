@@ -6,11 +6,9 @@ namespace NPU.Data.DataHandlers;
 
 public class BlobStorageDriver(StorageSettings config): IBlobStorageDriver
 {
-    private readonly string _connectionString = $"DefaultEndpointsProtocol=https;AccountName={config.ACCOUNT_NAME};AccountKey={config.CONNECTION_KEY};EndpointSuffix=core.windows.net";
-    
     public async Task<Stream> ReadFileAsync(string blobName)
     {
-        var blobServiceClient = new BlobServiceClient(_connectionString);
+        var blobServiceClient = new BlobServiceClient(config.CONNECTION_STRING);
         var containerClient = blobServiceClient.GetBlobContainerClient(config.CON_NAME);
         var blobClient = containerClient.GetBlobClient(blobName);
 
@@ -21,7 +19,7 @@ public class BlobStorageDriver(StorageSettings config): IBlobStorageDriver
     
     public async Task WriteFileAsync(string path, string fileName, Stream data)
     {
-        var blobServiceClient = new BlobServiceClient(_connectionString);
+        var blobServiceClient = new BlobServiceClient(config.CONNECTION_STRING);
         var containerClient = blobServiceClient.GetBlobContainerClient(config.CON_NAME);
         var blobClient = containerClient.GetBlobClient(Path.Combine(path, fileName));
         
