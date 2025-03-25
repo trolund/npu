@@ -8,7 +8,7 @@ namespace NPU.Controllers
 {
     [Route("api/npus")]
     [ApiController]
-    public class NpuController(NpuService npuService) : ControllerBase
+    public class NpuController(INpuService npuService) : ControllerBase
     {
         /// <summary>
         /// Create a new npu

@@ -6,7 +6,7 @@ using Microsoft.Azure.Cosmos;
 
 namespace NPU.UnitTests.TestSupport;
 
-public class CosmosRepositoryStub<T> : IRepository<T> where T : BaseItem, new()
+public class CosmosRepositoryStub<T> : IRepository<T> where T : BaseItem
 {
     private readonly List<T> _items = [];
 
@@ -93,7 +93,7 @@ public class CosmosRepositoryStub<T> : IRepository<T> where T : BaseItem, new()
             : query.OrderByDescending(x => property.GetValue(x));
     }
 
-    public async Task<IEnumerable<TX>> QueryAsync<TX>(QueryDefinition queryDefinition)
+    public Task<IEnumerable<TX>> QueryAsync<TX>(QueryDefinition queryDefinition)
     {
         throw new NotImplementedException("QueryDefinition is not supported in the stub.");
     }

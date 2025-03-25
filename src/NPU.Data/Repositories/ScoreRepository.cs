@@ -4,7 +4,7 @@ using NPU.Data.Model;
 
 namespace NPU.Data.Repositories;
 
-public class ScoreRepository(IRepository<Score> scoreRepository)
+public class ScoreRepository(IRepository<Score> scoreRepository) : IScoreRepository
 {
     public async Task<Score?> UpdateScoreAsync(Score score)
     {

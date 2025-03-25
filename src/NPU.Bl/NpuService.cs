@@ -1,4 +1,3 @@
-using Microsoft.Extensions.Logging;
 using NPU.Data.Model;
 using NPU.Data.Repositories;
 using NPU.Infrastructure.Dtos;
@@ -6,10 +5,9 @@ using NPU.Infrastructure.Dtos;
 namespace NPU.Bl;
 
 public class NpuService(
-    NpuRepository npuRepository,
-    ScoreRepository scoreRepository,
-    FileUploadService fileUploadService,
-    ILogger<NpuService> logger)
+    INpuRepository npuRepository,
+    IScoreRepository scoreRepository,
+    IFileUploadService fileUploadService) : INpuService
 {
     public async Task<NpuResponse> CreateNpuWithImagesAsync(string name, string description,
         IEnumerable<(string, Stream)> images)

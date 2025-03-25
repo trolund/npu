@@ -5,7 +5,7 @@ using NPU.Data.Model;
 
 namespace NPU.Data.Repositories;
 
-public class NpuRepository(IRepository<Npu> npuRepository)
+public class NpuRepository(IRepository<Npu> npuRepository) : INpuRepository
 {
     public async Task<Npu> UpdateNpuAsync(Npu npu)
     {

@@ -4,12 +4,11 @@ using NPU.Bl;
 
 namespace NPU.FuncApp;
 
-public class CleanData(ILogger<CleanData> logger, NpuService npuService)
+public class CleanData(ILogger<CleanData> logger, FileUploadService npuService)
 {
     [Function("CleanData")]
     public void Run([TimerTrigger("0 0 0 * * *")] TimerInfo myTimer)
     {
-        //_ = npuService.DeleteAllOverMonthOld();
-        logger.LogInformation("Deleted all old notes");
+        
     }
 }

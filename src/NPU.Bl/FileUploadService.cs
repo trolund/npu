@@ -1,11 +1,8 @@
-using System.Net;
-using NPU.Data.Config;
 using NPU.Data.DataHandlers;
-using static System.Text.RegularExpressions.Regex;
 
 namespace NPU.Bl;
 
-public partial class FileUploadService(IBlobStorageDriver storageDriver, StorageSettings storageSettings)
+public partial class FileUploadService(IBlobStorageDriver storageDriver) : IFileUploadService
 {
     private const string ImagePath = "images/npu";
 
