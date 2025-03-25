@@ -9,29 +9,29 @@ public static class DatabaseSeeding
         new Npu
         {
             Id = Guid.NewGuid().ToString(),
-            Name = "a",
+            Name = "a apple",
             Description = "a",
             Images = ["image1.gif", "image2.jpg"]
         },
         new Npu
         {
             Id = Guid.NewGuid().ToString(),
-            Name = "b",
+            Name = "b banana",
             Description = "a",
             Images = ["image1.gif", "image2.jpg", "image2.jpg"]
         },
         new Npu
         {
             Id = Guid.NewGuid().ToString(),
-            Name = "c",
+            Name = "c citron",
             Description = "a",
             Images = ["image1.gif", "image2.jpg", "image3.jpg", "image4.jpg"]
         },
         new Npu
         {
             Id = Guid.NewGuid().ToString(),
-            Name = "d",
-            Description = "a",
+            Name = "d - do you even lift bro",
+            Description = "b",
             Images = ["image1.gif", "image2.pdf"]
         }
     ];

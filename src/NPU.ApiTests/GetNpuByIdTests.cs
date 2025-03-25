@@ -1,5 +1,6 @@
 using System.Net;
 using NPU.ApiTests.TestHelpers;
+using NPU.Data.Model;
 using NPU.Infrastructure.Dtos;
 
 namespace NPU.ApiTests;
@@ -13,7 +14,7 @@ public class GetNpuByIdTests(WebApiApplication factory) : TestBase(factory)
         var npu = DatabaseSeeding.Npus.First();
         
         // WHEN
-        var (_, data) = await GetAndDeserialize<NpuResponse>(Routes.Npus.Get(npu.Id));
+        var (_, data) = await GetAndDeserialize<NpuResponse>(Routes.Npus.GetById(npu.Id));
 
         // THEN
         Assert.NotNull(data);
@@ -30,7 +31,7 @@ public class GetNpuByIdTests(WebApiApplication factory) : TestBase(factory)
         const string npuId = "00000000-0000-0000-0000-000000000000";
         
         // WHEN
-        var result = await ApiClient.GetAsync(Routes.Npus.Get(npuId));
+        var result = await ApiClient.GetAsync(Routes.Npus.GetById(npuId));
 
         // THEN
         Assert.Equal(HttpStatusCode.NotFound, result.StatusCode);
@@ -52,5 +53,23 @@ public class GetNpuByIdTests(WebApiApplication factory) : TestBase(factory)
 
         // THEN
         Assert.Equal(HttpStatusCode.BadRequest, httpMsg.StatusCode);
+    }
+    
+    [Theory]
+    [InlineData("a",nameof(Npu.CreatedAt), true, 1, 1)]
+    [InlineData("b",nameof(Npu.CreatedAt), true, 1, 2)]
+    [InlineData("a",nameof(Npu.CreatedAt), true, 1, 3)]
+    public async Task GIVEN_NpusInTheDB_WHEN_GetNpusIsCalled_THEN_NpusAreReturned_Correctly(string searchTerm, string sortOrderKey, bool ascending, int page, int pageSize)
+    {
+        // WHEN
+        var (_, data) = await GetAndDeserialize<PaginatedResponse<NpuResponse>>(Routes.Npus.Get(page, pageSize, sortOrderKey, ascending, searchTerm));
+
+        // THEN
+        Assert.NotNull(data);
+        Assert.NotNull(data.Items);
+        Assert.NotEmpty(data.Items);
+        Assert.Equal(pageSize, data.Items.Count());
+        Assert.Equal(pageSize, data.PageSize);
+        Assert.True(data.Items.All(npu => npu.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)));
     }
 }

@@ -12,15 +12,14 @@ public static class Routes
         
         public const string Test = BaseNpusRoute + "/test";  // GET /npus
         public const string Create = BaseNpusRoute;  // POST /npus
-        public const string GetById = BaseNpusRoute + "/{id}";  // GET /npus/{id}
         public const string GetAll = BaseNpusRoute;  // GET /npus
 
         public static string List() => BaseNpusRoute;
         
-        public static string List(int page, int pageSize, string sortOrderKey = "CreatedAt", bool ascending = true, string searchTerm = "") 
+        public static string Get(int page, int pageSize, string sortOrderKey = "CreatedAt", bool ascending = true, string searchTerm = "") 
             => $"{BaseNpusRoute}?page={page}&pageSize={pageSize}&sortOrderKey={sortOrderKey}&ascending={ascending}&searchTerm={searchTerm}";
 
-        public static string Get(string id) => $"{BaseNpusRoute}/{id}";
+        public static string GetById(string id) => $"{BaseNpusRoute}/{id}";
 
         public static string PostScore(string id) => $"{BaseNpusRoute}/{id}/score";
         public static string GetImage(string id, string path) => $"{BaseNpusRoute}/{id}/image?path={path}";
