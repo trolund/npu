@@ -1,10 +1,10 @@
-using NPU.Data.Base;
-using NPU.Data.Model;
 using System.Linq.Expressions;
 using System.Reflection;
 using Microsoft.Azure.Cosmos;
+using NPU.Data.Base;
+using NPU.Data.Model;
 
-namespace NPU.UnitTests.TestSupport;
+namespace NPU.UnitTests.Stubs;
 
 public class CosmosRepositoryStub<T> : IRepository<T> where T : BaseItem
 {

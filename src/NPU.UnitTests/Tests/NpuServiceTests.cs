@@ -2,7 +2,7 @@ using Moq;
 using NPU.Bl;
 using NPU.Data.Model;
 using NPU.Data.Repositories;
-using NPU.UnitTests.TestSupport;
+using NPU.UnitTests.Stubs;
 
 namespace NPU.UnitTests.Tests;
 
