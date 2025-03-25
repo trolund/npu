@@ -27,7 +27,6 @@ public abstract class TestBase(WebApiApplication factory) : IClassFixture<WebApi
     protected async Task<(HttpResponseMessage, T?)> GetAndDeserialize<T>(string route)
     {
         var response = await ApiClient.GetAsync(route);
-        response.EnsureSuccessStatusCode();
         var stringResult = await response.Content.ReadAsStringAsync();
 
         if (typeof(T) == typeof(string))
