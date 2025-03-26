@@ -1,4 +1,5 @@
 # NPU Backend
+[![Deploy npu to Azure](https://github.com/trolund/npu/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/trolund/npu/actions/workflows/main.yml)
 
 ## Context Diagram
 
