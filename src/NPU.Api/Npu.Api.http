@@ -2,7 +2,7 @@
 @NPU_Api_HostAddress = https://npuapp.azurewebsites.net
 
 ### Create a new NPU
-POST {{NPU_Api_HostAddress}}/v1/api/npus?Name=TestNPU&Description=This%20is%20a%20test
+POST {{NPU_Api_HostAddress}}/api/npus?Name=TestNPU&Description=This%20is%20a%20test
 Content-Type: multipart/form-data
 
 --boundary
@@ -16,13 +16,13 @@ Content-Type: image/jpeg
 @NPU_Id = 123456
 
 ### Get a specific NPU by ID
-GET {{NPU_Api_HostAddress}}/v1/api/npus/{{NPU_Id}}
+GET {{NPU_Api_HostAddress}}/api/npus/{{NPU_Id}}
 
 ### Get NPUs with pagination
-GET {{NPU_Api_HostAddress}}/v1/api/npus?page=1&pageSize=10&searchTerm=test&sortOrderKey=CreatedAt&ascending=true
+GET {{NPU_Api_HostAddress}}/api/npus?page=1&pageSize=10&searchTerm=test&sortOrderKey=CreatedAt&ascending=true
 
 ### Post a score for an NPU
-POST {{NPU_Api_HostAddress}}/v1/api/npus/{{NPU_Id}}/score
+POST {{NPU_Api_HostAddress}}/api/npus/{{NPU_Id}}/score
 Content-Type: application/json
 
 {

@@ -4,8 +4,6 @@ namespace NPU.Bl;
 
 public partial class FileUploadService(IBlobStorageDriver storageDriver) : IFileUploadService
 {
-    private const string ImagePath = "images/npu";
-
     [System.Text.RegularExpressions.GeneratedRegex("^[a-zA-Z0-9_-]+$")]
     private static partial System.Text.RegularExpressions.Regex SanitizeRegex();
 
@@ -34,13 +32,13 @@ public partial class FileUploadService(IBlobStorageDriver storageDriver) : IFile
         var sanitizedFileName = Sanitize(id, fileName);
 
         var filePath = $"{DateTime.Now:yyyyMMddHHmmss}_{sanitizedFileName}";
-        await storageDriver.WriteFileAsync(ImagePath, Path.Combine(id, filePath), fileStream);
+        await storageDriver.WriteFileAsync("", Path.Combine(id, filePath), fileStream);
         return filePath;
     }
 
     public async Task<Stream> GetFileAsync(string id, string filename)
     {
         var sanitizedFileName = Sanitize(id, filename);
-        return await storageDriver.ReadFileAsync($"{ImagePath}/{id}/{sanitizedFileName}");
+        return await storageDriver.ReadFileAsync($"/{id}/{sanitizedFileName}");
     }
 }
