@@ -1,5 +1,5 @@
 ﻿using NPU.ApiTests.TestHelpers;
-using NPU.Data.Model;
+using NPU.Data.Models;
 using NPU.Infrastructure.Dtos;
 
 namespace NPU.ApiTests.Tests;

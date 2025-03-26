@@ -1,4 +1,4 @@
-using NPU.Data.Model;
+using NPU.Data.Models;
 using NPU.Data.Repositories;
 using NPU.Infrastructure.Dtos;
 
@@ -9,7 +9,7 @@ public class NpuService(
     IScoreRepository scoreRepository,
     IFileUploadService fileUploadService) : INpuService
 {
-    public async Task<NpuResponse> CreateNpuWithImagesAsync(string name, string description,
+    public async Task<NpuResponse?> CreateNpuWithImagesAsync(string name, string description,
         IEnumerable<(string, Stream)> images)
     {
         var id = Guid.NewGuid().ToString();
@@ -33,7 +33,7 @@ public class NpuService(
     }
 
     // Insecure read
-    public async Task<(Stream, string)> GetImageOfNpu(string id, string filename)
+    public async Task<(Stream?, string?)> GetImageOfNpu(string id, string filename)
     {
         var stream = await fileUploadService.GetFileAsync(id, filename);
         var fileType = Path.GetExtension(filename).Replace(".", "");

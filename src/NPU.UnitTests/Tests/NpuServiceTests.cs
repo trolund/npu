@@ -1,6 +1,6 @@
 using Moq;
 using NPU.Bl;
-using NPU.Data.Model;
+using NPU.Data.Models;
 using NPU.Data.Repositories;
 using NPU.UnitTests.Stubs;
 
@@ -47,6 +47,7 @@ public class NpuServiceTests
         var result = await _npuService.CreateNpuWithImagesAsync(name, description, images);
 
         // Assert
+        Assert.NotNull(result);
         Assert.Equal(name, result.Name);
         Assert.Equal(description, result.Description);
         Assert.Equal(uploadedLinks, result.Images);

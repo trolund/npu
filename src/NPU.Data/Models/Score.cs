@@ -1,4 +1,4 @@
-namespace NPU.Data.Model;
+namespace NPU.Data.Models;
 
 public class Score: BaseItem
 {

@@ -1,4 +1,4 @@
-# Lock Note
+# NPU
 
 ## 🚀 Up and running
 
@@ -8,6 +8,12 @@ Run the cosmos emulator in docker by running the script `cosmosdblocalsetupScrip
 
 ```bash
 ./scripts/cosmosdblocalsetupScript.sh
+```
+
+Run the blob storage emulator by running
+
+```bash
+./scripts/blobStorageEmulator.sh
 ```
 
 Then just run the project and everything should work.

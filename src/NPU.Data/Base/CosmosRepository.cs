@@ -2,7 +2,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Linq;
-using NPU.Data.Model;
+using NPU.Data.Models;
 
 namespace NPU.Data.Base;
 

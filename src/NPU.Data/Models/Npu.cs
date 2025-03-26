@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace NPU.Data.Model;
+namespace NPU.Data.Models;
 
 public class Npu : BaseItem
 {

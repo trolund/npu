@@ -1,12 +1,12 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using NPU.Bl;
-using NPU.Data.Model;
+using NPU.Data.Models;
 using NPU.Infrastructure.Dtos;
 
 namespace NPU.Controllers
 {
-    [Route("api/npus")]
+    [Route("v1/api/npus")]
     [ApiController]
     public class NpuController(INpuService npuService) : ControllerBase
     {
@@ -24,7 +24,7 @@ namespace NPU.Controllers
                 request.Images.Select(i => (i.FileName, i.OpenReadStream())));
 
             if (createdNpu is null)
-            {
+            { 
                 return BadRequest("Failed to create npu");
             }
 

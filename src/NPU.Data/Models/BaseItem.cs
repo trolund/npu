@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace NPU.Data.Model;
+namespace NPU.Data.Models;
 
 public abstract class BaseItem
 {

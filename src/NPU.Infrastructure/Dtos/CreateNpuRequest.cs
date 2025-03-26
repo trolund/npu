@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http;
-using NPU.Data.Model;
 using NPU.Infrastructure.CustomDataAnnotations;
 
 namespace NPU.Infrastructure.Dtos;

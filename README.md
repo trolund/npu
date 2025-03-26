@@ -1,16 +1,37 @@
 # NPU Backend
 
-[![Deploy npu to Azure](https://github.com/trolund/npu/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/trolund/npu/actions/workflows/main.yml)
+## Context Diagram
 
-## Get token
+```mermaid
+C4Context
+    Person(user, "NPU Fan", "Uploads creations and rates others' work")
+    System(npuPlatform, "NPU Platform", "A social platform for NPU fans")
+    System_Ext(cloudHosting, "Cloud Platform", "Azure hosting the backend and frontend")
 
-```bash
-az account get-access-token --query accessToken --output tsv | pbcopy
+    Rel(user, npuPlatform, "Uploads NPU creations, searches, and rates")
+    Rel(npuPlatform, cloudHosting, "Hosted on cloud infrastructure")
 ```
 
-![alt text](src/docs/fronpage.png)
-![alt text](src/docs/createNote.png)
-![alt text](src/docs/created.png)
-![alt text](src/docs/password.png)
-![alt text](src/docs/read.png)
-![alt text](src/docs/read2.png)
+## Container Diagram
+
+```mermaid
+C4Container
+    Person(user, "NPU Fan", "Interacts with the NPU platform")
+
+    System_Boundary(npuSystem, "NPU Platform") {
+        Container(webApp, "Web Application", "React/Next.js", "Allows users to browse, upload, and rate NPU creations")
+        Container(mobileApp, "Mobile App", "Flutter/React Native", "Mobile interface for interacting with NPU creations")
+        Container(npuBackend, "NPU Backend", "C#/.NET", "Handles business logic and data processing")
+        ContainerDb(database, "Database", "Azure Cosmos DB", "Stores user data, NPU creations, and ratings")
+        Container(apiGateway, "API Gateway", "Azure API Management", "Routes requests to the backend services")
+        Container(blobStorage, "Blob Storage", "Azure Blob Storage", "Stores images of NPU creations")
+    }
+
+    Rel(user, webApp, "Uses")
+    Rel(user, mobileApp, "Uses")
+    Rel(webApp, apiGateway, "Calls API")
+    Rel(mobileApp, apiGateway, "Calls API")
+    Rel(apiGateway, npuBackend, "Forwards requests")
+    Rel(npuBackend, database, "Reads/Writes Data")
+    Rel(npuBackend, blobStorage, "Stores/Retrieves Images")
+```

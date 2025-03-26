@@ -1,6 +1,6 @@
 using System.Linq.Expressions;
 using Microsoft.Azure.Cosmos;
-using NPU.Data.Model;
+using NPU.Data.Models;
 
 namespace NPU.Data.Base;
 

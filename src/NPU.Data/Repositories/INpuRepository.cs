@@ -1,4 +1,4 @@
-using NPU.Data.Model;
+using NPU.Data.Models;
 
 namespace NPU.Data.Repositories;
 

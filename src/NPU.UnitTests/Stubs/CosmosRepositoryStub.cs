@@ -2,7 +2,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Microsoft.Azure.Cosmos;
 using NPU.Data.Base;
-using NPU.Data.Model;
+using NPU.Data.Models;
 
 namespace NPU.UnitTests.Stubs;
 
