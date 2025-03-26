@@ -1,6 +1,9 @@
 name: Deploy npu to Azure
 
 on:
+  push:
+    branches:
+      - bicep-storeage-refactor
   pull_request: # Trigger the workflow on pull requests
     branches:
       - main
