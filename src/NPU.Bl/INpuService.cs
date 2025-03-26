@@ -5,10 +5,10 @@ namespace NPU.Bl;
 
 public interface INpuService
 {
-    Task<NpuResponse> CreateNpuWithImagesAsync(string name, string description,
+    Task<NpuResponse?> CreateNpuWithImagesAsync(string name, string description,
         IEnumerable<(string, Stream)> images);
 
-    Task<(Stream, string)> GetImageOfNpu(string id, string filename);
+    Task<(Stream?, string?)> GetImageOfNpu(string id, string filename);
 
     Task<PaginatedResponse<NpuResponse>> GetNpuPaginatedAsync(string? searchTerm, int page, int pageSize,
         bool ascending, string? sortOrderKey);
