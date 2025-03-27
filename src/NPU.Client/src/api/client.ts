@@ -1,85 +1,41 @@
-import { QueryClient, useMutation, useQuery } from "react-query";
-import { NoteDto } from "../types/NoteDto";
+import { useQuery } from "react-query";
 import { isProduction } from "./node";
-import { FetchError } from "./models/FetchError";
+import { PaginatedResponse } from "../types/PaginatedResponse";
+import { NpuResponse } from "../types/NpuResponse";
+import { keepPreviousData } from "@tanstack/react-query";
 
 const baseUrl: string = isProduction()
   ? window.location.origin
   : import.meta.env.VITE_BACKEND_BASE_URL;
 
-const fetchNotes = async () => {
-  const res = await fetch(`${baseUrl}/api/notes`);
-  return res.json();
-};
-
-export const useGetNotes = () => {
-  return useQuery<NoteDto[], Error>("notes", fetchNotes);
-};
-
-const fetchNoteByIdAndPassword = async (
-  id: string,
-  password?: string | null,
+export const useGetPaginatedNpus = (
+  searchTerm: string,
+  pageNumber: number = 1,
+  pageSize: number = 10,
+  sortOrderKey: string = "deadline",
 ) => {
-  const url = new URL(`${baseUrl}/api/notes/${id}`);
+  const fetchProjectsPage = async (
+    searchTerm: string,
+    pageNumber: number,
+    pageSize: number,
+    sortOrderKey: string,
+  ): Promise<PaginatedResponse<NpuResponse>> => {
+    const response = await fetch(
+      `${baseUrl}/projects/pagination?${new URLSearchParams({
+        searchTerm,
+        pageNumber: pageNumber.toString(),
+        pageSize: pageSize.toString(),
+        sortOrderKey,
+      })}`,
+    );
 
-  const response = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ password: password }),
-  });
+    return await response.json();
+  };
 
-  const data = await response.json();
-
-  if (response.ok) {
-    return data;
-  } else {
-    throw new FetchError(response);
-  }
-};
-
-export const useGetNoteById = (id: string, password?: string | null) => {
-  return useQuery<NoteDto, Error>(
-    ["note", id],
-    () => fetchNoteByIdAndPassword(id, password),
-    { retryOnMount: false, enabled: false },
-  );
-};
-
-const createNote = async (note: NoteDto) => {
-  const res = await fetch(`${baseUrl}/api/notes`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(note),
-  });
-  return res.json() as Promise<NoteDto>;
-};
-
-export const useCreateNote = (queryClient: QueryClient) => {
-  return useMutation(createNote, {
-    onSuccess: () => {
-      queryClient.invalidateQueries("note");
-    },
-  });
-};
-
-const deleteNote = async (noteId: string) => {
-  const res = await fetch(`${baseUrl}/api/notes/${noteId}`, {
-    method: "DELETE",
-  });
-
-  if (!res.ok) {
-    throw new Error("Failed to delete note");
-  }
-};
-
-export const useDeleteNote = (id: string, queryClient: QueryClient) => {
-  return useMutation(() => deleteNote(id), {
-    onSuccess: () => {
-      queryClient.invalidateQueries("note");
-    },
+  return useQuery({
+    queryKey: ["npu", pageNumber, pageSize, searchTerm, sortOrderKey],
+    queryFn: () =>
+      fetchProjectsPage(searchTerm, pageNumber, pageSize, sortOrderKey),
+    placeholderData: keepPreviousData,
   });
 };
