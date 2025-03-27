@@ -8,29 +8,27 @@ namespace NPU.FuncApp;
 
 public class Functions(ILogger<Functions> logger, CosmosSettings cosmosSettings)
 {
-    private static string? _connection;
-    
     [Function("CleanData")]
     public void Run([TimerTrigger("0 0 0 * * *")] TimerInfo myTimer)
     {
-        _connection = cosmosSettings.DB_CONNECTION_STRING;
+        
     }
     
     [Function("CosmosTrigger")]
-    public void Run([CosmosDBTrigger(
-            databaseName: cosmosSettings,
-            containerName:"TriggerItems",
-            Connection = _connection,
-            LeaseContainerName = "leases",
-            CreateLeaseContainerIfNotExists = true)] IReadOnlyList<Document> scores,
+    public void Run(
+        [CosmosDBTrigger(
+            databaseName: "%CosmosDBDatabaseName%",  // Uses the value from App Settings
+            containerName: "%CosmosDBContainerName%", // Uses the value from App Settings
+            Connection = "CosmosDBConnection", // References the App Setting for connection string
+            LeaseContainerName = "%LeaseContainerName%",  // Uses the value from App Settings
+            CreateLeaseContainerIfNotExists = true)] IReadOnlyList<Document>? todoItems,
         FunctionContext context)
     {
-        if (scores is not null && scores.Any())
+        if (todoItems == null || !todoItems.Any()) return;
+        
+        foreach (var doc in todoItems)
         {
-            foreach (var doc in scores)
-            {
-                logger.LogInformation("score: {desc}", doc.Description);
-            }
+            logger.LogInformation("hej");
         }
     }
 }
