@@ -2,7 +2,35 @@
 
 [![Deploy npu to Azure](https://github.com/trolund/npu/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/trolund/npu/actions/workflows/main.yml)
 
-## Context Diagram
+## Overview
+
+### Folder structure:
+```
+📂 ProjectRoot
+├── 📁 infrastructure (Azure infrastructure as code)
+├── 📁 scripts (Scripts for local development)
+├── 📁 src (Source code) 
+├── 📄 README.md
+└── 📄 Requirements.md
+```
+
+### Project structure (src folder):
+```
+📂 NPU (9 projects)
+├── 📁 NPU.Api (Api controllers)
+├── 📁 NPU.ApiTests (Api tests)
+├── 📁 NPU.BI (Business logic)
+├── 🌐 NPU.Client (Frontend - have not been implemented ❌)
+├── 📁 NPU.Data (Data access)
+├── 📁 NPU.End2EndTests (End-to-end tests - have not been implemented ❌)
+├── 📁 NPU.FuncApp (Azure Function App - have not been implemented ❌))
+├── 📁 NPU.Infrastructure
+└── 📁 NPU.UnitTests
+```
+
+The application have NOT been tested properly and the test project are simply examples of how to write tests.
+
+### Context Diagram
 
 ```mermaid
 C4Context
@@ -14,7 +42,7 @@ C4Context
     Rel(npuPlatform, cloudHosting, "Hosted on cloud infrastructure")
 ```
 
-## Container Diagram
+### Container Diagram
 
 ```mermaid
 C4Container

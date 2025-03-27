@@ -45,7 +45,9 @@ public class NpuService(
     {
         var (items, totalCount) = await npuRepository
             .GetNpusPaginatedAsync(searchTerm, page, pageSize, ascending, sortOrderKey);
-
+        
+        // Enrich with score
+        // TODO: This is a naive implementation, offload to a function app
         var mappedItems = await Task.WhenAll(items.Select(e => NpuResponse.FromModel(e))
             .Select(async response =>
             {
