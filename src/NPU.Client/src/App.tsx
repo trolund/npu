@@ -14,7 +14,6 @@ function App() {
           <Routes>
             <Route index element={<Index />}></Route>
             <Route path="*" element={<PageNotFound />} />
-            <Route path="not-found" element={<PageNotFound />} />
           </Routes>
         </Layout>
       </BrowserRouter>

@@ -21,7 +21,7 @@ export const useGetPaginatedNpus = (
     sortOrderKey: string,
   ): Promise<PaginatedResponse<NpuResponse>> => {
     const response = await fetch(
-      `${baseUrl}/projects/pagination?${new URLSearchParams({
+      `${baseUrl}/npus/pagination?${new URLSearchParams({
         searchTerm,
         pageNumber: pageNumber.toString(),
         pageSize: pageSize.toString(),
