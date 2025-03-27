@@ -4,17 +4,28 @@
 
 ## Overview
 
+### Scope
+
+No users are modeled in the system and not authentication is implemented. 
+
+The system is a simple backend for a social platform where users can upload NPU creations and rate others' work. 
+The system is hosted on Azure and uses **Azure Cosmos DB** for storing data and **Azure Blob Storage** for storing images.
+
 ### Folder structure:
+
 ```
-📂 ProjectRoot
-├── 📁 infrastructure (Azure infrastructure as code)
-├── 📁 scripts (Scripts for local development)
-├── 📁 src (Source code) 
-├── 📄 README.md
-└── 📄 Requirements.md
+📂 ProjectRoot  
+├── 📁 .github (GitHub actions)  
+│   ├── 📁 workflows (GitHub actions workflows pipeline)  
+├── 📁 infrastructure (Azure infrastructure as code)  
+├── 📁 scripts (Scripts for local development)  
+├── 📁 src (Source code)  
+├── 📄 README.md  
+└── 📄 Requirements.md  
 ```
 
 ### Project structure (src folder):
+
 ```
 📂 NPU (9 projects)
 ├── 📁 NPU.Api (Api controllers)
