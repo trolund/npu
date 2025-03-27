@@ -13,7 +13,8 @@ public class NpuService(
         IEnumerable<(string, Stream)> images)
     {
         var id = Guid.NewGuid().ToString();
-        // optimistic file upload
+        
+        // TODO: Optimistic file upload
         var links = new List<string>();
         foreach (var (fileName, stream) in images)
         {
@@ -32,12 +33,19 @@ public class NpuService(
         return NpuResponse.FromModel(created);
     }
 
-    // Insecure read
+    // TODO: Insecure read
     public async Task<(Stream?, string?)> GetImageOfNpu(string id, string filename)
     {
-        var stream = await fileUploadService.GetFileAsync(id, filename);
-        var fileType = Path.GetExtension(filename).Replace(".", "");
-        return (stream, fileType);
+        try
+        {
+            var stream = await fileUploadService.GetFileAsync(id, filename);
+            var fileType = Path.GetExtension(filename).Replace(".", "");
+            return (stream, fileType);
+        }
+        catch (Exception e)
+        {
+            return (null, null);
+        }
     }
 
     public async Task<PaginatedResponse<NpuResponse>> GetNpuPaginatedAsync(string? searchTerm, int page, int pageSize,
