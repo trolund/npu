@@ -6,7 +6,7 @@
 
 ### Scope
 
-No users are modeled in the system and not authentication is implemented. 
+No users are modeled in the system and no authentication is implemented. 
 
 The system is a simple backend for a social platform where users can upload NPU creations and rate others' work. 
 The system is hosted on Azure and uses **Azure Cosmos DB** for storing data and **Azure Blob Storage** for storing images.
