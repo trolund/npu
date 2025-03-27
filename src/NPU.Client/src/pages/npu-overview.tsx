@@ -3,10 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { NpuResponse } from "../types/NpuResponse";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
-import Modal from "../component/Modal";
 import { TopBar } from "../component/top-bar";
-import { Table } from "../component/Table";
-import { useGetPaginatedNpus } from "../api/client";
+import Modal from "../component/modal";
 
 export default function NpuOverview() {
   const [searchTerm, setSearchTerm] = useState("");

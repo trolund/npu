@@ -1,8 +1,8 @@
 {
   "profiles": {
-    "NPU.FuncApp": {
+    "Company.FunctionApp1": {
       "commandName": "Project",
-      "commandLineArgs": "--port 7294",
+      "commandLineArgs": "--port 7243",
       "launchBrowser": false
     }
   }
