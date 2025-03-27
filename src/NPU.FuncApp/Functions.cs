@@ -1,7 +1,6 @@
 using System.Reflection.Metadata;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
-using NPU.Bl;
 using NPU.Data.Config;
 
 namespace NPU.FuncApp;
